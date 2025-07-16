@@ -1,7 +1,7 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -9,7 +9,7 @@ from apps.common import models
 from . import serializers
 
 
-class FrontendTranslationView(ListAPIView):
+class FrontendTranslationView(ListCreateAPIView):
     serializer_class = serializers.FrontendTranslationSerializer
     permission_classes = (AllowAny,)
 
