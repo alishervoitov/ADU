@@ -1,9 +1,10 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 from . import models
 
 
 @admin.register(models.VersionHistory)
-class VersionHistoryAdmin(admin.ModelAdmin):
+class VersionHistoryAdmin(TranslationAdmin):
     list_display = ("id", "version", "required", "created_at", "updated_at")
     list_display_links = ("id", "version")
     list_filter = ("required", "created_at", "updated_at")
@@ -11,8 +12,28 @@ class VersionHistoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.FrontendTranslation)
-class FrontTranslationAdmin(admin.ModelAdmin):
+class FrontTranslationAdmin(TranslationAdmin):
     list_display = ("id", "key", "text", "created_at", "updated_at")
     list_display_links = ("id", "key")
     list_filter = ("created_at", "updated_at")
-    search_fields = ("key", "version")
+    search_fields = ("key", "text")
+    
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('key',)
+        }),
+        ('Translations', {
+            'fields': ('text_uz', 'text_uz_cyrl', 'text_ru', 'text_en'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }

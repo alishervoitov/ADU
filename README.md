@@ -57,3 +57,14 @@ pre-commit install
 ```
 
 
+###  For Locale  
+#### Barcha tillarga tarjima fayllarini yaratish
+
+- `python manage.py makemessages -l uz`
+- `python manage.py makemessages -l cyrl`
+- `python manage.py makemessages -l ru`
+- `python manage.py makemessages -l en`
+
+#### Yaratilgan tarjima fayllarini kompilatsiya qilish
+- `python manage.py compilemessages`
+

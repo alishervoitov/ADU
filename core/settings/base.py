@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 DJANGO_APPS = [
     "jazzmin",
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -59,7 +60,6 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
-    "modeltranslation",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
@@ -89,6 +89,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -151,13 +152,30 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'uz'
+
+
+LANGUAGES = [
+    ('uz', 'Uzbek'),
+    ('cyrl', 'Uzbek Cyrillic'),
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
 
 TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+# Model Translation settings
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+MODELTRANSLATION_LANGUAGES = ('uz', 'cyrl', 'ru', 'en')
+MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'uz'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

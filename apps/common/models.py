@@ -24,7 +24,7 @@ class VersionHistory(BaseModel):
 
 class FrontendTranslation(BaseModel):
     key = models.CharField(_("Key"), max_length=255, unique=True)
-    text = models.CharField(_("Text"), max_length=1024)
+    text = models.TextField(_("Text"))
 
     class Meta:
         verbose_name = _("Frontend translation")
