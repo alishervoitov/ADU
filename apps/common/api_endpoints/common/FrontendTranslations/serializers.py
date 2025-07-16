@@ -19,7 +19,7 @@ class FrontendTranslationSerializer(serializers.ModelSerializer):
         if current_language == 'uz' or current_language is None:
             return obj.text
 
-        if current_language == 'cyrl':
+        if current_language == 'uz-cyrl':
             return getattr(obj, 'text_uz_cyrl', obj.text) or obj.text
         elif current_language == 'ru':
             return getattr(obj, 'text_ru', obj.text) or obj.text

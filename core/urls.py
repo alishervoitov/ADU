@@ -10,6 +10,7 @@ urlpatterns = [
     path("admin/", admin.site.urls), 
     path("api/v1/common/", include("apps.common.urls", namespace="common")),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('rosetta/', include('rosetta.urls')),
 ]
 
 urlpatterns += swagger_urlpatterns

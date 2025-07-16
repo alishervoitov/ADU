@@ -18,15 +18,8 @@ class FrontTranslationAdmin(TranslationAdmin):
     list_filter = ("created_at", "updated_at")
     search_fields = ("key", "text")
     
-    fieldsets = (
-        ('Basic Info', {
-            'fields': ('key',)
-        }),
-        ('Translations', {
-            'fields': ('text_uz', 'text_uz_cyrl', 'text_ru', 'text_en'),
-            'classes': ('collapse',),
-        }),
-    )
+    # TranslationAdmin avtomatik ravishda barcha til maydonlarini ko'rsatadi
+    # Qo'shimcha fieldsets kerak emas
     
     class Media:
         js = (

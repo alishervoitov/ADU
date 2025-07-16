@@ -60,6 +60,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
+    "rosetta",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
@@ -156,8 +157,8 @@ LANGUAGE_CODE = 'uz'
 
 
 LANGUAGES = [
-    ('uz', 'Uzbek'),
-    ('cyrl', 'Uzbek Cyrillic'),
+    ('uz', 'Uzbek (Latin)'),
+    ('uz-cyrl', 'Uzbek (Cyrillic)'),
     ('ru', 'Russian'),
     ('en', 'English'),
 ]
@@ -174,8 +175,17 @@ LOCALE_PATHS = [
 
 # Model Translation settings
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
-MODELTRANSLATION_LANGUAGES = ('uz', 'cyrl', 'ru', 'en')
+MODELTRANSLATION_LANGUAGES = ('uz', 'uz-cyrl', 'ru', 'en')
 MODELTRANSLATION_PREPOPULATE_LANGUAGE = 'uz'
+
+# Rosetta settings
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_CODE = 'uz'
+ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = 'Uzbek'
+ROSETTA_MESSAGES_PER_PAGE = 20
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+ROSETTA_MESSAGES_SOURCE_LANGUAGE = 'uz'
+ROSETTA_SHOW_AT_ADMIN_PANEL = True
+ROSETTA_REQUIRES_AUTH = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
