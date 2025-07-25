@@ -7,11 +7,11 @@ from .generator import BothHttpAndHttpsSchemaGenerator
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Boiler API",
+        title="ADU Web-Site API",
         default_version="v1",
-        description="Boiler Group",
+        description="This site created by ICT JOBS Group",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email=""),
+        contact=openapi.Contact(email="jmamatmusayev@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,
