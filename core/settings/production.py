@@ -34,10 +34,6 @@ MEDIA_ROOT = '/var/www/adu/media/'
 # Lekin qo'shimcha sozlamalar:
 DATABASES['default'].update({
     'CONN_MAX_AGE': 60,
-    'OPTIONS': {
-        'MAX_CONNS': 20,
-        'charset': 'utf8mb4',
-    }
 })
 
 ###################################################################
