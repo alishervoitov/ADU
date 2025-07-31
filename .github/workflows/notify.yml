@@ -17,6 +17,7 @@ jobs:
       - name: 📤 Send Telegram notification on push
         if: github.event_name == 'push'
         run: |
+          export TZ="Asia/Tashkent"
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
           -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
           -d text="🚀 *New Push to GitHub!*
