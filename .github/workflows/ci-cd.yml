@@ -120,7 +120,7 @@ jobs:
             source venv/bin/activate
             if [ "$REQUIREMENTS_CHANGED" = true ]; then
               echo "📦 Installing/updating dependencies..."
-              pip install -r requirements.txt
+              pip install -r requirements/develop.txt
             fi
             
             echo "🗄️ Running migrations..."
