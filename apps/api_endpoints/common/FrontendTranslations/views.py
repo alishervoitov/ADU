@@ -43,8 +43,6 @@ class FrontendTranslationView(ListCreateAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
-        # raise ValidationError("custom error")
-        print(8/0)
 
         queryset = models.FrontendTranslation.objects.all()
         key = self.request.GET.get("key", None)

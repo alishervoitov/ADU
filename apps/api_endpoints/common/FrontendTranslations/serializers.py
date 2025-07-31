@@ -14,8 +14,6 @@ class FrontendTranslationSerializer(serializers.ModelSerializer):
 
         current_language = get_language(self.context.get("request"))
 
-        print(f"Detected lang: {current_language}")
-
         if current_language == 'uz' or current_language is None:
             return obj.text
 
