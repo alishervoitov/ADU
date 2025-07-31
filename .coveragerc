@@ -1,0 +1,55 @@
+[run]
+source = .
+omit = 
+    */venv/*
+    */env/*
+    */migrations/*
+    # tests.py fayllardan tashqari barcha test fayllarni chiqarish
+    */test_*
+    */*test.py
+    */conftest.py
+    */factories.py
+    # Asosiy fayllar
+    manage.py
+    */settings/*
+    */static/*
+    */staticfiles/*
+    */media/*
+    */node_modules/*
+    */__pycache__/*
+    */site-packages/*
+    .git/*
+    */htmlcov/*
+    # Production fayllar
+    core/asgi.py
+    core/wsgi.py
+    gunicorn_config.py
+
+[report]
+# Coverage minimum darajasi
+fail_under = 70
+
+# Ko'rsatilmaydigan qodlar
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+
+show_missing = True
+skip_covered = False
+skip_empty = True
+
+[html]
+directory = htmlcov
+title = ADU Project Coverage Report
+
+[xml]
+output = coverage.xml
