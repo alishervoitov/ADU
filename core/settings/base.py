@@ -219,8 +219,8 @@ AUTH_USER_MODEL = "users.User"
 # CACHES
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"{env.str('REDIS_URL', 'redis://localhost:6379/0')}",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"{env.str('REDIS_URL', 'redis://localhost:6379/1')}",
         "KEY_PREFIX": "adu_project", 
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",

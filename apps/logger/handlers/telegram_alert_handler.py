@@ -11,8 +11,8 @@ class TelegramBotAlertHandler(logging.Handler):
 
     def emit(self, record):
         log_entry = self.format(record)
-        if settings.DEBUG:
-            notifyAdminTask(message=log_entry)
-        else:
-            notifyAdminTask.delay(message=log_entry)
+        notifyAdminTask(message=log_entry)
+        # if settings.DEBUG:
+        # else:
+        #     notifyAdminTask.delay(message=log_entry)
         

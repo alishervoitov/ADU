@@ -14,3 +14,4 @@ factory_boy==3.3.3
 coverage==7.10.1
 django-silk==5.4.0
 celery==5.5.3
+django-redis==6.0.0
