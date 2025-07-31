@@ -106,9 +106,9 @@ jobs:
             git reset --hard origin/main 
             git pull origin main
 
-            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
-            if echo "$CHANGED_FILES" | grep -q requirements; then
-              echo "📦 Requirements changed. Will update dependencies..."
+            CHANGED_FILES=$(git diff --name-only HEAD^ HEAD -- requirements/)
+            if [ -n "$CHANGED_FILES" ]; then
+              echo "📦 Requirements changed (files: $CHANGED_FILES). Will update dependencies..."
               REQUIREMENTS_CHANGED=true
             else
               echo "📦 Requirements unchanged."
