@@ -96,7 +96,7 @@ jobs:
             echo "🚀 Starting deployment..."
             
             # Project direktoriyasiga o'tish
-            cd /var/www/adu || { echo "❌ Project directory not found"; exit 1; }
+            cd /var/www/adu
             
             # Git remote URL o'rnatish  (expired: 30-oct. 2025)
             git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}.git
@@ -115,23 +115,23 @@ jobs:
             fi
             
             echo "⬇️ Pulling latest code..."
-            git pull origin main || { echo "❌ Git pull failed"; exit 1; }
+            git pull origin main
             
             source venv/bin/activate
             if [ "$REQUIREMENTS_CHANGED" = true ]; then
               echo "📦 Installing/updating dependencies..."
-              pip install -r requirements.txt || { echo "❌ Dependencies installation failed"; exit 1; }
+              pip install -r requirements.txt
             fi
             
             echo "🗄️ Running migrations..."
-            python manage.py migrate --noinput || { echo "❌ Migrations failed"; exit 1; }
+            python manage.py migrate --noinput
             
             echo "📁 Collecting static files..."
-            python manage.py collectstatic --noinput || { echo "❌ Static files collection failed"; exit 1; }
+            python manage.py collectstatic --noinput
             
             # Service restart
             echo "🔄 Restarting service..."
-            sudo systemctl restart adu_back || { echo "❌ Service restart failed"; exit 1; }
+            sudo systemctl restart adu_back
             
             # Service status tekshirish
             echo "✅ Checking service status..."
