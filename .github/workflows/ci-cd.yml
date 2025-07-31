@@ -106,6 +106,7 @@ jobs:
             git reset --hard origin/main 
             git pull origin main
 
+            # TODO:  requirements ni ichidagilari o'zgargan o'zgarmaganligini tekshirish kerak
             # CHANGED_FILES=$(git diff --name-only HEAD^ HEAD -- requirements/)
             # if [ -n "$CHANGED_FILES" ]; then
             #   echo "📦 Requirements changed (files: $CHANGED_FILES). Will update dependencies..."
