@@ -39,6 +39,7 @@ jobs:
           # Test uchun environment o'zgaruvchilarini o'rnatish
           echo "DJANGO_SETTINGS_MODULE=core.settings.test" >> $GITHUB_ENV
           echo "DATABASE_URL=sqlite:///test.db" >> $GITHUB_ENV
+          echo "SECRET_KEY=SOME_SECRET_KEY_QATTU" >> $GITHUB_ENV
 
       - name: Run Django tests with coverage
         run: |
