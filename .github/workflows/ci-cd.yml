@@ -91,7 +91,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script_stop: true  # Scriptda xatolik bo'lsa to'xtatadi
           script: |
-            set -e  # Har qanday xatolikda scriptni to'xtatadi
+            set -ex  # Har qanday xatolikda scriptni to'xtatadi
             
             echo "🚀 Starting deployment..."
             
@@ -99,13 +99,13 @@ jobs:
             cd /var/www/adu || { echo "❌ Project directory not found"; exit 1; }
             
             # Git remote URL o'rnatish  (expired: 30-oct. 2025)
-            git remote set-url origin https://${{ secrets.USERNAME_GITHUB }}:${{ secrets.TOKEN_GITHUB }}@github.com/jaloliddin1006/adu.git
+            git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}.git
             
             echo "📥 Fetching latest changes..."
-            git fetch origin main || { echo "❌ Git fetch failed"; exit 1; }
+            git fetch origin main
             
             # Requirements.txt o'zgarganligini tekshirish
-            CHANGED_FILES=$(git diff --name-only HEAD..origin/main)
+            CHANGED_FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null || echo "")
             if [[ $CHANGED_FILES == *"requirements"* ]]; then
               echo "📦 Requirements changed. Will update dependencies..."
               REQUIREMENTS_CHANGED=true
@@ -114,25 +114,18 @@ jobs:
               REQUIREMENTS_CHANGED=false
             fi
             
-            # Git pull
             echo "⬇️ Pulling latest code..."
             git pull origin main || { echo "❌ Git pull failed"; exit 1; }
             
-            # Virtual environment aktivatsiyasi va dependencies yangilash
+            source venv/bin/activate
             if [ "$REQUIREMENTS_CHANGED" = true ]; then
               echo "📦 Installing/updating dependencies..."
-              source venv/bin/activate || { echo "❌ Virtual environment activation failed"; exit 1; }
               pip install -r requirements.txt || { echo "❌ Dependencies installation failed"; exit 1; }
-            else
-              echo "📦 Skipping dependencies installation"
-              source venv/bin/activate || { echo "❌ Virtual environment activation failed"; exit 1; }
             fi
             
-            # Database migrations
             echo "🗄️ Running migrations..."
             python manage.py migrate --noinput || { echo "❌ Migrations failed"; exit 1; }
             
-            # Static files yig'ish (agar kerak bo'lsa)
             echo "📁 Collecting static files..."
             python manage.py collectstatic --noinput || { echo "❌ Static files collection failed"; exit 1; }
             
@@ -143,14 +136,10 @@ jobs:
             # Service status tekshirish
             echo "✅ Checking service status..."
             sleep 5
-            if sudo systemctl is-active --quiet adu_back; then
-              echo "✅ Service is running successfully"
-            else
-              echo "❌ Service failed to start"
-              sudo systemctl status adu_back
-              exit 1
-            fi
-            
+            sudo systemctl is-active --quiet adu_back && \
+              echo "✅ Service is running successfully" || \
+              { echo "❌ Service failed to start"; sudo systemctl status adu_back; exit 1; }
+
             echo "✅ Deployment completed successfully!"
 
       - name: Notify Telegram - Successful Deployment
