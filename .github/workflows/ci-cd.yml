@@ -98,7 +98,7 @@ jobs:
             # Project direktoriyasiga o'tish
             cd /var/www/adu || { echo "❌ Project directory not found"; exit 1; }
             
-            # Git remote URL o'rnatish
+            # Git remote URL o'rnatish  (expired: 30-oct. 2025)
             git remote set-url origin https://${{ secrets.USERNAME_GITHUB }}:${{ secrets.TOKEN_GITHUB }}@github.com/jaloliddin1006/adu.git
             
             echo "📥 Fetching latest changes..."
