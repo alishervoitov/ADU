@@ -101,6 +101,11 @@ jobs:
             # Git remote URL o'rnatish  (expired: 30-oct. 2025)
             git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}.git
             
+            echo "🔄 Pulling latest changes..."
+            git fetch --all
+            git reset --hard origin/main 
+            git pull origin main
+
             CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
             if echo "$CHANGED_FILES" | grep -q requirements; then
               echo "📦 Requirements changed. Will update dependencies..."
@@ -109,7 +114,8 @@ jobs:
               echo "📦 Requirements unchanged."
               REQUIREMENTS_CHANGED=false
             fi
-            
+
+
             source venv/bin/activate
             if [ "$REQUIREMENTS_CHANGED" = true ]; then
               echo "📦 Installing/updating dependencies..."
