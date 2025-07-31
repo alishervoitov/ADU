@@ -32,10 +32,8 @@ class FrontendTranslationView(ListCreateAPIView):
         ]
     )
     def get(self, request):
-        # Tilni parametrdan olish
         lang = request.GET.get('lang', 'uz')
         
-        # Tilni faollashtirish
         activate(lang)
         
         serializer = self.get_serializer(self.get_queryset(), many=True)
@@ -45,6 +43,9 @@ class FrontendTranslationView(ListCreateAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
+        # raise ValidationError("custom error")
+        print(8/0)
+
         queryset = models.FrontendTranslation.objects.all()
         key = self.request.GET.get("key", None)
 

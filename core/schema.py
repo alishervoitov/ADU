@@ -11,7 +11,7 @@ schema_view = get_schema_view(
         default_version="v1",
         description="This site created by ICT JOBS Group",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="jmamatmusayev@gmail.com"),
+        contact=openapi.Contact(email="jmamatmusayev@gmail.com", name="Jaloliddin"),
         license=openapi.License(name="BSD License"),
     ),
     public=True,

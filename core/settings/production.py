@@ -8,10 +8,10 @@ DEBUG = False
 
 # Production server uchun ALLOWED_HOSTS
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "api.1vs1.uz", 
-    "185.133.251.101", 
+    '127.0.0.1',
+    'localhost',
+    'api.1vs1.uz', 
+    '185.133.251.101', 
 ]
 
 ###################################################################
@@ -41,11 +41,11 @@ DATABASES['default'].update({
 ###################################################################
 
 USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
-    "https://api.1vs1.uz", 
+    'https://api.1vs1.uz', 
 ]
 
 # Security headers
@@ -59,23 +59,58 @@ X_FRAME_OPTIONS = 'DENY'
 
 CORS_ORIGIN_ALLOW_ALL = False  
 CORS_ALLOWED_ORIGINS = [
-    "https://1vs1.uz", 
-    "http://localhost:3000", 
+    'https://1vs1.uz', 
+    'http://localhost:3000', 
 ]
 CORS_ALLOW_CREDENTIALS = True
 
 ###################################################################
 # Logging
 ###################################################################
+LOG_LEVEL = 'ERROR'
+logs_path = '/var/www/adu/logs'
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {pathname}:{lineno} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
     'handlers': {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/var/www/adu/logs/django.log',
+            'filename': f'{logs_path}/django.log',
+        },
+        # -- telegram bot handler
+        'telegrambot_alert': {
+            'level': LOG_LEVEL,
+            'class': 'apps.logger.handlers.TelegramBotAlertHandler',
+            'formatter': 'verbose',
+        },
+        # Console handler
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        # -- celery log handler
+        'celery_log_file': {
+            'level': LOG_LEVEL,
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'backupCount': 30,
+            'filename': f'{logs_path}/celery.log',
+            'formatter': 'verbose',
+            'encoding': 'utf-8',
         },
     },
     'loggers': {
@@ -83,6 +118,18 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'INFO',
             'propagate': True,
+        },
+        # -- Error logger
+        'error_request_logger': {
+            'handlers': ['file', 'console', 'telegrambot_alert'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
+        # -- Celery logger
+        'celery_logger': {
+            'handlers': ['celery_log_file', 'console', 'telegrambot_alert'],
+            'level': LOG_LEVEL,
+            'propagate': False,
         },
     },
 }
