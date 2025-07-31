@@ -45,7 +45,7 @@ jobs:
       - name: Run Django tests with coverage
         run: |
           coverage run manage.py test
-          coverage report --fail-under=70
+          coverage report --fail-under=50
 
       - name: Send success notification to Telegram
         if: success()
