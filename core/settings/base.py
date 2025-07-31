@@ -72,6 +72,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         ),
     "DEFAULT_THROTTLE_RATES": {"anon": "40/minute", "user": "100/minute"},
+    "EXCEPTION_HANDLER": "apps.logger.restapi_exception_handler.restapi_exception_handler",
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
@@ -98,6 +99,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+if DEBUG:
+    INSTALLED_APPS.append("silk")
+    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
+    INTERNAL_IPS = [
+        "127.0.0.1",
+        "0.0.0.0",
+    ]
+    
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
@@ -237,3 +247,7 @@ CELERY_TIMEZONE = "Asia/Tashkent"
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+BOT_TOKEN = env.str('BOT_TOKEN', 'your_bot_token')
+ADMIN_CHAT_ID = env.str('ADMIN_CHAT_ID', '123')
+THREAD_ID = env.str('THREAD_ID', None)
