@@ -8,7 +8,7 @@ from .schema import swagger_urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls), 
-    path("api/v1/", include("apps.common.urls")),
+    path("api/v1/", include("apps.api_endpoints.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
     path('rosetta/', include('rosetta.urls')),
 ]
