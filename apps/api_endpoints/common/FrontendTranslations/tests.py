@@ -1,87 +1,55 @@
-from django.test import TestCase, RequestFactory
-from django.contrib.auth import get_user_model
-from django.utils.translation import activate, deactivate
-from rest_framework.request import Request
+from django.test import TestCase
+from django.urls import reverse
+from rest_framework.test import APIClient
 from apps.common.models import FrontendTranslation
-from apps.api_endpoints.common.FrontendTranslations.serializers import FrontendTranslationSerializer
-
-User = get_user_model()
 
 
-class LanguageAwareSerializerTest(TestCase):
-    """Language-aware serializer testlari"""
-
+class FrontendTranslationAPITest(TestCase):
+    
     def setUp(self):
-        """Test ma'lumotlarini tayyorlash"""
-        self.factory = RequestFactory()
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
+        self.client = APIClient()
+        self.url = reverse('common:frontend-translations')
+
+        self.translation = FrontendTranslation.objects.create(
+            key='greeting',
+            text='Salom',                 # uz
+            text_uz_cyrl='Салом',         # uz-cyrl
+            text_ru='Здравствуйте',       # ru
+            text_en='Hello'               # en
         )
-        
-        # Test translation'larini yaratish
-        self.translations = [
-            FrontendTranslation.objects.create(
-                key='home_uz',
-                text='Bosh sahifa',
-                created_by=self.user,
-                updated_by=self.user
-            ),
-            FrontendTranslation.objects.create(
-                key='home_ru',
-                text='Главная страница',
-                created_by=self.user,
-                updated_by=self.user
-            ),
-            FrontendTranslation.objects.create(
-                key='home_en',
-                text='Home Page',
-                created_by=self.user,
-                updated_by=self.user
-            )
-        ]
 
-    def test_serializer_with_uzbek_context(self):
-        """Uzbek til konteksti bilan serializer"""
-        # Uzbek tilini aktivlashtirish
-        activate('uz')
-        
-        uz_translation = self.translations[0]  # home_uz
-        serializer = FrontendTranslationSerializer(uz_translation)
-        data = serializer.data
-        
-        self.assertEqual(data['key'], 'home_uz')
-        self.assertEqual(data['text'], 'Bosh sahifa')
-        
-        deactivate()
+    def test_uz_translation(self):
+        response = self.client.get(self.url, HTTP_ACCEPT_LANGUAGE='uz')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Salom')
 
-    def test_serializer_with_russian_context(self):
-        """Rus til konteksti bilan serializer"""
-        # Rus tilini aktivlashtirish
-        activate('ru')
-        
-        ru_translation = self.translations[1]  # home_ru
-        serializer = FrontendTranslationSerializer(ru_translation)
-        data = serializer.data
-        
-        self.assertEqual(data['key'], 'home_ru')
-        self.assertEqual(data['text'], 'Главная страница')
-        
-        deactivate()
+    def test_uz_cyrl_translation(self):
+        response = self.client.get(self.url, HTTP_ACCEPT_LANGUAGE='uz-cyrl')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Салом')
 
-    def test_serializer_with_request_language_header(self):
-        """Request'dagi language header bilan serializer"""
-        # Uzbek header bilan request yaratish
-        request = self.factory.get('/', HTTP_ACCEPT_LANGUAGE='uz')
-        drf_request = Request(request)
-        
-        uz_translation = self.translations[0]
-        serializer = FrontendTranslationSerializer(
-            uz_translation, 
-            context={'request': drf_request}
-        )
-        data = serializer.data
-        
-        self.assertEqual(data['key'], 'home_uz')
-        self.assertEqual(data['text'], 'Bosh sahifa')
+    def test_ru_translation(self):
+        response = self.client.get(self.url, HTTP_ACCEPT_LANGUAGE='ru')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Здравствуйте')
+
+    def test_en_translation(self):
+        response = self.client.get(self.url, HTTP_ACCEPT_LANGUAGE='en')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Hello')
+
+    def test_fallback_to_default_text(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Salom')
+
+    def test_invalid_language_fallback(self):
+        response = self.client.get(self.url, HTTP_ACCEPT_LANGUAGE='de')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('greeting', response.data)
+        self.assertEqual(response.data['greeting'], 'Salom')
