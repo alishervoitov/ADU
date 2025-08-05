@@ -10,14 +10,5 @@ class InteractiveServiceAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     ordering = ('order', 'created_at')
     
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'icon', 'icon_dark', 'description', 'link', 'is_active', 'order')
-        }),
-        ('Timestamps', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
      

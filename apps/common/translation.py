@@ -1,4 +1,3 @@
-# translation.py
 from modeltranslation.translator import TranslationOptions, register
 
 from apps.common import models
