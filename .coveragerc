@@ -10,6 +10,7 @@ omit =
     */conftest.py
     */factories.py
     # Asosiy fayllar
+    */__init__.py
     manage.py
     */settings/*
     */static/*
@@ -20,6 +21,7 @@ omit =
     */site-packages/*
     .git/*
     */htmlcov/*
+    apps/logger/*
     # Production fayllar
     core/asgi.py
     core/wsgi.py
