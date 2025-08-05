@@ -6,7 +6,7 @@ import math
 
 class CustomLimitOffsetPagination(LimitOffsetPagination):
     """
-    Custom LimitOffsetPagination that includes page_count in the response.
+    Custom Pagination class that includes page_count in the response.
     """
     default_limit = 10
     limit_query_param = 'limit'
@@ -27,7 +27,7 @@ class CustomLimitOffsetPagination(LimitOffsetPagination):
 
 class CustomPageNumberPagination(PageNumberPagination):
     """
-    Custom PageNumberPagination that includes page_count and current_page in the response.
+    Custom Pagination class that includes page_count and current_page in the response.
     """
     page_size = 10
     page_size_query_param = 'page_size'

@@ -56,17 +56,3 @@ class FrontendTranslationView(ListCreateAPIView):
         if self.request.method == 'POST':
             return serializers.FrontendTranslationCreateSerializer
         return serializers.FrontendTranslationSerializer
-
-
-class FrontendTranslationCreateView(CreateAPIView):
-    """Yangi tarjima yaratish uchun alohida view"""
-    serializer_class = serializers.FrontendTranslationCreateSerializer
-    permission_classes = (AllowAny,)
-    
-    def post(self, request):
-        """Yangi tarjima yaratish"""
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

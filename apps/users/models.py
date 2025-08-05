@@ -17,5 +17,5 @@ class User(AbstractUser, TimeStamped, Authored):
         verbose_name_plural = _("Foydalanuvchilar")
 
     def __str__(self):
-        return self.username
+        return f"{self.username}"
 
