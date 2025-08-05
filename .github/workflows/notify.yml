@@ -29,7 +29,7 @@ jobs:
           📝 *Message:* _${{ github.event.head_commit.message }}_
           👤 *Pushed by:* \`${{ github.actor }}\`
 
-          📅 _Time: $(date +"%Y-%m-%d %H:%M:%S UTC")_" \
+          📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
           -d parse_mode=Markdown
 
       - name: 📝 Send Telegram notification on PR opened
@@ -47,7 +47,7 @@ jobs:
 
           🔗 [View PR](${{ github.event.pull_request.html_url }}) 
 
-          📅 _Time: $(date +"%Y-%m-%d %H:%M:%S UTC")_" \
+          📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
           -d parse_mode=Markdown
 
       - name: ✅ Send Telegram notification on merge to main
@@ -65,5 +65,5 @@ jobs:
 
           🔗 [View PR](${{ github.event.pull_request.html_url }})
 
-          📅 _Time: $(date +"%Y-%m-%d %H:%M:%S UTC")_" \
+          📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
                     -d parse_mode=Markdown
