@@ -142,6 +142,10 @@ jobs:
               { echo "❌ Service failed to start"; sudo systemctl status adu_back; exit 1; }
 
             echo "✅ Deployment completed successfully!"
+            
+            coverage run manage.py test
+            coverage report 
+            coverage html 
 
       - name: Notify Telegram - Successful Deployment
         if: success()
@@ -156,6 +160,8 @@ jobs:
           🔖 Commit: \`${{ github.sha }}\`
           📝 *Message:* _${{ github.event.head_commit.message }}_
           👤 Author: ${{ github.actor }}
+          📊 Coverage Test Report: [View Report](https://report.1vs1.uz)
+
           📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
           -d parse_mode=Markdown
 
@@ -171,7 +177,6 @@ jobs:
           💥 Branch: \`${{ github.ref_name }}\`
           📝 Commit: \`${{ github.sha }}\`
           👤 Author: ${{ github.actor }}
-          
           🔍 Check [GitHub Actions logs](https://github.com/${{ github.repository }}/actions) for details.
 
           📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \

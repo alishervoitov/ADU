@@ -72,6 +72,9 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ),
     "DEFAULT_THROTTLE_RATES": {"anon": "40/minute", "user": "100/minute"},
     "EXCEPTION_HANDLER": "apps.logger.restapi_exception_handler.restapi_exception_handler",
     "DEFAULT_FILTER_BACKENDS": (
