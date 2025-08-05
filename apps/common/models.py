@@ -5,6 +5,14 @@ from django.utils.translation import gettext_lazy as _
 class TimeStamped(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), db_index=True)
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"), db_index=True)
+    
+    @property
+    def created_at_str(self):
+        return self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    
+    @property
+    def updated_at_str(self):
+        return self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
 
     class Meta:
         abstract = True

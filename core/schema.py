@@ -5,6 +5,7 @@ from rest_framework import permissions
 
 from .generator import BothHttpAndHttpsSchemaGenerator
 
+
 schema_view = get_schema_view(
     openapi.Info(
         title="ADU Web-Site API",
@@ -18,6 +19,7 @@ schema_view = get_schema_view(
     generator_class=BothHttpAndHttpsSchemaGenerator,
     permission_classes=(permissions.AllowAny,),
 )
+
 swagger_urlpatterns = [
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
