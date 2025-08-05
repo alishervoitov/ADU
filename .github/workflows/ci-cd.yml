@@ -150,7 +150,7 @@ jobs:
           -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
           -d text="✅ *Deployment successful!* 
 
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})" \
+          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
           
           🚀 Branch: \`${{ github.ref_name }}\`
           🔖 Commit: \`${{ github.sha }}\`
@@ -172,7 +172,7 @@ jobs:
           📝 Commit: \`${{ github.sha }}\`
           👤 Author: ${{ github.actor }}
           
-          🔍 Check [GitHub Actions logs](https://github.com/${{ github.repository }}/actions) for details." \
-          
+          🔍 Check [GitHub Actions logs](https://github.com/${{ github.repository }}/actions) for details.
+
           📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
           -d parse_mode=Markdown

@@ -22,7 +22,7 @@ jobs:
           -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
           -d text="🚀 *New Push to GitHub!*
 
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})"
+          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
           
           📂 *Branch:* \`${{ github.ref_name }}\`
           🔖 *Commit:* \`${{ github.sha }}\`
@@ -39,13 +39,13 @@ jobs:
           -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
           -d text="🔧 *New Pull Request Opened!*
 
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})"
+          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
 
           🔀 *From:* \`${{ github.head_ref }}\`
           ➡️ *To:* \`${{ github.base_ref }}\`
           👤 *Opened by:* \`${{ github.actor }}\`
 
-          🔗 [View PR](${{ github.event.pull_request.html_url }})" \
+          🔗 [View PR](${{ github.event.pull_request.html_url }}) 
 
           📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
           -d parse_mode=Markdown
@@ -57,13 +57,13 @@ jobs:
           -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
           -d text="🎉 *Pull Request Merged Successfully!*
 
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})"
+          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
 
           📂 *Merged into:* \`${{ github.base_ref }}\`
           🔀 *From:* \`${{ github.head_ref }}\`
           👤 *By:* \`${{ github.actor }}\`
 
-          🔗 [View PR](${{ github.event.pull_request.html_url }})" \
+          🔗 [View PR](${{ github.event.pull_request.html_url }})
 
           📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
                     -d parse_mode=Markdown
