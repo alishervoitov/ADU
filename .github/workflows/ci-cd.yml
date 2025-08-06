@@ -133,7 +133,7 @@ jobs:
             
             coverage run manage.py test
             coverage report --fail-under=20
-            coverage html 
+            coverage html --fail-under=20 
 
       - name: Notify Telegram - Successful Deployment
         if: success()
