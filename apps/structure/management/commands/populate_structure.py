@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
+import random
 from apps.structure.factories import (
     EmployeeFactory, FacultyFactory, DepartmentFactory, 
     SpecialtyFactory, FacultyEmployeeFactory, DepartmentEmployeeFactory
@@ -78,6 +79,13 @@ class Command(BaseCommand):
             self.style.SUCCESS('Structure app uchun ma\'lumotlar yaratilmoqda...')
         )
         
+        # Agar ma'lumotlar mavjud bo'lsa, qayta yaratmaslik
+        existing_faculties = Faculty.objects.count()
+        if existing_faculties > 0:
+            self.stdout.write(f'Structure app da allaqachon ma\'lumotlar mavjud ({existing_faculties} ta fakultet)')
+            self.stdout.write('Agar yangisini yaratmoqchi bo\'lsangiz, avval --clear ishlatib tozalang')
+            return
+        
         # Superuser yaratish (agar mavjud bo'lmasa)
         admin_user = None
         try:
@@ -124,7 +132,6 @@ class Command(BaseCommand):
             # Kafedralarni yaratish
             self.stdout.write('Kafedralar yaratilmoqda...')
             departments = []
-            import random
             for i in range(departments_count):
                 # Random fakultetni tanlash
                 faculty = random.choice(faculties)
@@ -140,16 +147,9 @@ class Command(BaseCommand):
             # Yo'nalishlarni yaratish
             self.stdout.write('Yo\'nalishlar yaratilmoqda...')
             for i in range(specialties_count):
-                faculty = random.choice(faculties)
-                # Shu fakultetga tegishli kafedralarni topish
-                faculty_departments = [d for d in departments if d.faculty == faculty]
-                
-                # Agar ushbu fakultetda kafedra topilmasa, birinchi mavjud kafedraning fakultetini olish
-                if not faculty_departments:
-                    department = random.choice(departments)
-                    faculty = department.faculty
-                else:
-                    department = random.choice(faculty_departments)
+                # Random kafedradan boshlab, uning fakultetini olish
+                department = random.choice(departments)
+                faculty = department.faculty
                 
                 SpecialtyFactory(
                     faculty=faculty,
@@ -165,13 +165,17 @@ class Command(BaseCommand):
             for faculty in faculties[:5]:  # Faqat birinchi 5 ta fakultet uchun
                 for _ in range(3):  # Har bir fakultetga 3 ta xodim
                     employee = random.choice(employees)
-                    FacultyEmployeeFactory(
-                        faculty=faculty,
-                        employee=employee,
-                        created_by=admin_user,
-                        updated_by=admin_user
-                    )
-                    faculty_employees_count += 1
+                    try:
+                        FacultyEmployeeFactory(
+                            faculty=faculty,
+                            employee=employee,
+                            created_by=admin_user,
+                            updated_by=admin_user
+                        )
+                        faculty_employees_count += 1
+                    except:
+                        # Duplicate bo'lishi mumkin, o'tkazib yuborish
+                        pass
             self.stdout.write(f'{faculty_employees_count} ta fakultet xodimi tayinlandi')
 
             # Kafedra xodimlarini yaratish
@@ -180,13 +184,17 @@ class Command(BaseCommand):
             for department in departments[:10]:  # Faqat birinchi 10 ta kafedra uchun
                 for _ in range(2):  # Har bir kafedraga 2 ta xodim
                     employee = random.choice(employees)
-                    DepartmentEmployeeFactory(
-                        department=department,
-                        employee=employee,
-                        created_by=admin_user,
-                        updated_by=admin_user
-                    )
-                    department_employees_count += 1
+                    try:
+                        DepartmentEmployeeFactory(
+                            department=department,
+                            employee=employee,
+                            created_by=admin_user,
+                            updated_by=admin_user
+                        )
+                        department_employees_count += 1
+                    except:
+                        # Duplicate bo'lishi mumkin, o'tkazib yuborish
+                        pass
             self.stdout.write(f'{department_employees_count} ta kafedra xodimi tayinlandi')
 
         self.stdout.write(

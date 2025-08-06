@@ -89,7 +89,7 @@ class Command(BaseCommand):
     def populate_blog(self, clear_data=False):
         """Blog app uchun ma'lumot yaratish"""
         self.stdout.write(self.style.HTTP_INFO('\n3. Blog app...'))
-        args = ['--services', '15']
+        args = ['--services', '15', '--faqs', '12']
         if clear_data:
             args.append('--clear')
         call_command('populate_blog', *args)
