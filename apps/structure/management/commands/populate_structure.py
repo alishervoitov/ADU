@@ -9,7 +9,7 @@ from apps.structure.factories.main_info import HomePageTextFactory
 from apps.structure.models.employees import Employee
 from apps.structure.models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
 from apps.users.models import User
-from apps.structure.models import HomePageText
+from apps.structure.models import HomePageText, UniversityBaseInfo
 
 
 class Command(BaseCommand):
@@ -110,6 +110,18 @@ class Command(BaseCommand):
             self.stdout.write(f"Admin foydalanuvchi yaratishda xatolik: {e}")
 
         with transaction.atomic():
+            # Universitet Base ma'lumoti, agar mavjud bo'lmasa
+            if not UniversityBaseInfo.objects.exists():
+                UniversityBaseInfo.objects.create(
+                    about="Andijon davlat universiteti haqida qisqacha ma'lumot.",
+                    students_count=12000,
+                    teachers_count=800,
+                    faculty_count=12,
+                    department_count=19,
+                    phone_num="+998 74 123 45 67",
+                    email="info@adu.uz",
+                    address="Andijon sh., Universitet ko'chasi, 1-uy"
+                )
             # Fakultetlarni yaratish
             self.stdout.write('Fakultetlar yaratilmoqda...')
             faculties = []

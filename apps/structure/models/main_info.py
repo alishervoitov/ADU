@@ -36,4 +36,68 @@ class HomePageText(TimeStamped, Authored):
 
     def __str__(self):
         return f"{self.type}: {self.title}"
+
+
+class UniversityBaseInfo(TimeStamped, Authored):
+    about = models.TextField(
+        verbose_name=_("Universitet haqida"),
+        blank=True,
+        null=True
+    )
+    students_count = models.PositiveIntegerField(
+        verbose_name=_("Talabalar soni"),
+        blank=True,
+        null=True
+    )
+    teachers_count = models.PositiveIntegerField(
+        verbose_name=_("O'qituvchilar soni"),
+        blank=True,
+        null=True
+    )
+    faculty_count = models.PositiveIntegerField(
+        verbose_name=_("Fakultetlar soni"),
+        blank=True,
+        null=True
+    )
+    department_count = models.PositiveIntegerField(
+        verbose_name=_("Kafedralar soni"),
+        blank=True,
+        null=True
+    )
+    image_1 = models.ImageField(
+        upload_to='university/',
+        verbose_name=_("Rasm 1"),
+        blank=True,
+        null=True
+    )
+    image_2 = models.ImageField(
+        upload_to='university/',
+        verbose_name=_("Rasm 2"),
+        blank=True,
+        null=True
+    )
+    phone_num = models.CharField(
+        max_length=20,
+        verbose_name=_("Telefon raqami"),
+        blank=True,
+        null=True
+    )
+    email = models.EmailField(
+        verbose_name=_("Email"),
+        blank=True,
+        null=True
+    )
+    address = models.CharField(
+        max_length=255,
+        verbose_name=_("Manzil"),
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = _("Universitet asosiy ma'lumotlari")
+        verbose_name_plural = _("Universitet asosiy ma'lumotlari")
+
+    def __str__(self):
+        return f"{self.id}"
     
