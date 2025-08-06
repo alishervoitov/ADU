@@ -88,10 +88,7 @@ class Command(BaseCommand):
                 # Interaktiv xizmatlarni yaratish
                 self.stdout.write('Interaktiv xizmatlar yaratilmoqda...')
                 for i in range(services_count):
-                    service = InteractiveServiceFactory(
-                        created_by=admin_user,
-                        updated_by=admin_user
-                    )
+                    service = InteractiveServiceFactory()
                 self.stdout.write(f'{services_count} ta interaktiv xizmat yaratildi')
             else:
                 self.stdout.write(f'Interaktiv xizmatlar allaqachon mavjud ({existing_services} ta)')
@@ -100,10 +97,7 @@ class Command(BaseCommand):
                 # FAQ larni yaratish
                 self.stdout.write('FAQ lar yaratilmoqda...')
                 for i in range(faqs_count):
-                    faq = FAQFactory(
-                        created_by=admin_user,
-                        updated_by=admin_user
-                    )
+                    faq = FAQFactory()
                 self.stdout.write(f'{faqs_count} ta FAQ yaratildi')
             else:
                 self.stdout.write(f'FAQ lar allaqachon mavjud ({existing_faqs} ta)')

@@ -93,11 +93,3 @@ class Command(BaseCommand):
         if clear_data:
             args.append('--clear')
         call_command('populate_blog', *args)
-
-    def populate_common(self, clear_data=False):
-        """Common app uchun ma'lumot yaratish"""
-        self.stdout.write(self.style.HTTP_INFO('\n4. Common app...'))
-        args = ['--translations', '30']
-        if clear_data:
-            args.append('--clear')
-        call_command('populate_common', *args)

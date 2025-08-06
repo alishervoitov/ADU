@@ -111,10 +111,7 @@ class Command(BaseCommand):
             self.stdout.write('Fakultetlar yaratilmoqda...')
             faculties = []
             for i in range(faculties_count):
-                faculty = FacultyFactory(
-                    created_by=admin_user,
-                    updated_by=admin_user
-                )
+                faculty = FacultyFactory()
                 faculties.append(faculty)
             self.stdout.write(f'{faculties_count} ta fakultet yaratildi')
 
@@ -122,10 +119,7 @@ class Command(BaseCommand):
             self.stdout.write('Xodimlar yaratilmoqda...')
             employees = []
             for i in range(employees_count):
-                employee = EmployeeFactory(
-                    created_by=admin_user,
-                    updated_by=admin_user
-                )
+                employee = EmployeeFactory()
                 employees.append(employee)
             self.stdout.write(f'{employees_count} ta xodim yaratildi')
 
@@ -136,11 +130,7 @@ class Command(BaseCommand):
                 # Random fakultetni tanlash
                 faculty = random.choice(faculties)
                 
-                department = DepartmentFactory(
-                    faculty=faculty,
-                    created_by=admin_user,
-                    updated_by=admin_user
-                )
+                department = DepartmentFactory(faculty=faculty)
                 departments.append(department)
             self.stdout.write(f'{departments_count} ta kafedra yaratildi')
 
@@ -153,9 +143,7 @@ class Command(BaseCommand):
                 
                 SpecialtyFactory(
                     faculty=faculty,
-                    department=department,
-                    created_by=admin_user,
-                    updated_by=admin_user
+                    department=department
                 )
             self.stdout.write(f'{specialties_count} ta yo\'nalish yaratildi')
 
@@ -168,9 +156,7 @@ class Command(BaseCommand):
                     try:
                         FacultyEmployeeFactory(
                             faculty=faculty,
-                            employee=employee,
-                            created_by=admin_user,
-                            updated_by=admin_user
+                            employee=employee
                         )
                         faculty_employees_count += 1
                     except:
@@ -187,9 +173,7 @@ class Command(BaseCommand):
                     try:
                         DepartmentEmployeeFactory(
                             department=department,
-                            employee=employee,
-                            created_by=admin_user,
-                            updated_by=admin_user
+                            employee=employee
                         )
                         department_employees_count += 1
                     except:

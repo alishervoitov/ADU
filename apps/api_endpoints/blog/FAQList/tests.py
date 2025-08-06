@@ -27,17 +27,13 @@ class FAQListTests(TestCase):
             question="Test savol 1",
             answer="Test javob 1",
             is_active=True,
-            order=1,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=1
         )
         faq2 = FAQFactory(
             question="Test savol 2", 
             answer="Test javob 2",
             is_active=True,
-            order=2,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=2
         )
 
         response = self.client.get(self.url)
@@ -61,9 +57,7 @@ class FAQListTests(TestCase):
             question="Faol savol",
             answer="Faol javob",
             is_active=True,
-            order=1,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=1
         )
         
         # Nofaol FAQ
@@ -71,9 +65,7 @@ class FAQListTests(TestCase):
             question="Nofaol savol",
             answer="Nofaol javob", 
             is_active=False,
-            order=2,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=2
         )
 
         response = self.client.get(self.url)
@@ -88,27 +80,21 @@ class FAQListTests(TestCase):
             question="Uchinchi savol",
             answer="Uchinchi javob",
             is_active=True,
-            order=3,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=3
         )
         
         faq1 = FAQFactory(
             question="Birinchi savol",
             answer="Birinchi javob", 
             is_active=True,
-            order=1,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=1
         )
         
         faq2 = FAQFactory(
             question="Ikkinchi savol",
             answer="Ikkinchi javob",
             is_active=True,
-            order=2,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=2
         )
 
         response = self.client.get(self.url)
@@ -126,9 +112,7 @@ class FAQListTests(TestCase):
             question="Test savol",
             answer="Test javob",
             is_active=True,
-            order=1,
-            created_by=self.admin_user,
-            updated_by=self.admin_user
+            order=1
         )
 
         response = self.client.get(self.url)
@@ -148,9 +132,7 @@ class FAQListTests(TestCase):
                 question=f"Savol {i+1}",
                 answer=f"Javob {i+1}",
                 is_active=True,
-                order=i+1,
-                created_by=self.admin_user,
-                updated_by=self.admin_user
+                order=i+1
             )
 
         response = self.client.get(self.url)
