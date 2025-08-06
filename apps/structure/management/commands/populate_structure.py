@@ -1,13 +1,15 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 import random
-from apps.structure.factories import (
+from apps.structure.factories.factories import (
     EmployeeFactory, FacultyFactory, DepartmentFactory, 
     SpecialtyFactory, FacultyEmployeeFactory, DepartmentEmployeeFactory
 )
+from apps.structure.factories.main_info import HomePageTextFactory
 from apps.structure.models.employees import Employee
 from apps.structure.models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
 from apps.users.models import User
+from apps.structure.models import HomePageText
 
 
 class Command(BaseCommand):
@@ -39,6 +41,12 @@ class Command(BaseCommand):
             help='Yaratilishi kerak bo\'lgan yo\'nalishlar soni (default: 60)',
         )
         parser.add_argument(
+            '--home-page-texts',
+            type=int,
+            default=16,  # 4 ta type uchun har biridan 4 tadan
+            help='Yaratilishi kerak bo\'lgan bosh sahifa matnlari soni (default: 16)',
+        )
+        parser.add_argument(
             '--clear',
             action='store_true',
             help='Mavjud ma\'lumotlarni o\'chirish',
@@ -52,7 +60,8 @@ class Command(BaseCommand):
             employees_count=options['employees'],
             faculties_count=options['faculties'],
             departments_count=options['departments'],
-            specialties_count=options['specialties']
+            specialties_count=options['specialties'],
+            home_page_texts_count=options['home_page_texts']
         )
 
     def clear_data(self):
@@ -68,23 +77,17 @@ class Command(BaseCommand):
             Department.objects.all().delete()
             Faculty.objects.all().delete()
             Employee.objects.all().delete()
+            HomePageText.objects.all().delete()
         
         self.stdout.write(
             self.style.SUCCESS('Structure app ma\'lumotlari muvaffaqiyatli o\'chirildi!')
         )
 
-    def create_data(self, employees_count, faculties_count, departments_count, specialties_count):
+    def create_data(self, employees_count, faculties_count, departments_count, specialties_count, home_page_texts_count):
         """Ma'lumotlarni yaratish"""
         self.stdout.write(
             self.style.SUCCESS('Structure app uchun ma\'lumotlar yaratilmoqda...')
         )
-        
-        # Agar ma'lumotlar mavjud bo'lsa, qayta yaratmaslik
-        existing_faculties = Faculty.objects.count()
-        if existing_faculties > 0:
-            self.stdout.write(f'Structure app da allaqachon ma\'lumotlar mavjud ({existing_faculties} ta fakultet)')
-            self.stdout.write('Agar yangisini yaratmoqchi bo\'lsangiz, avval --clear ishlatib tozalang')
-            return
         
         # Superuser yaratish (agar mavjud bo'lmasa)
         admin_user = None
@@ -110,42 +113,70 @@ class Command(BaseCommand):
             # Fakultetlarni yaratish
             self.stdout.write('Fakultetlar yaratilmoqda...')
             faculties = []
-            for i in range(faculties_count):
+            existing_faculties_count = Faculty.objects.count()
+            needed_faculties = max(0, faculties_count - existing_faculties_count)
+            
+            # Mavjud fakultetlarni olish
+            faculties.extend(list(Faculty.objects.all()))
+            
+            # Yetishmagan fakultetlarni yaratish
+            for i in range(needed_faculties):
                 faculty = FacultyFactory()
                 faculties.append(faculty)
-            self.stdout.write(f'{faculties_count} ta fakultet yaratildi')
+            self.stdout.write(f'{needed_faculties} ta yangi fakultet yaratildi (jami: {len(faculties)})')
 
             # Xodimlarni yaratish
             self.stdout.write('Xodimlar yaratilmoqda...')
             employees = []
-            for i in range(employees_count):
+            existing_employees_count = Employee.objects.count()
+            needed_employees = max(0, employees_count - existing_employees_count)
+            
+            # Mavjud xodimlarni olish
+            employees.extend(list(Employee.objects.all()))
+            
+            # Yetishmagan xodimlarni yaratish
+            for i in range(needed_employees):
                 employee = EmployeeFactory()
                 employees.append(employee)
-            self.stdout.write(f'{employees_count} ta xodim yaratildi')
+            self.stdout.write(f'{needed_employees} ta yangi xodim yaratildi (jami: {len(employees)})')
 
             # Kafedralarni yaratish
             self.stdout.write('Kafedralar yaratilmoqda...')
             departments = []
-            for i in range(departments_count):
-                # Random fakultetni tanlash
-                faculty = random.choice(faculties)
-                
-                department = DepartmentFactory(faculty=faculty)
-                departments.append(department)
-            self.stdout.write(f'{departments_count} ta kafedra yaratildi')
+            existing_departments_count = Department.objects.count()
+            needed_departments = max(0, departments_count - existing_departments_count)
+            
+            # Mavjud kafedralarni olish
+            departments.extend(list(Department.objects.all()))
+            
+            # Yetishmagan kafedralarni yaratish
+            if needed_departments > 0 and faculties:
+                for i in range(needed_departments):
+                    # Random fakultetni tanlash
+                    faculty = random.choice(faculties)
+                    
+                    department = DepartmentFactory(faculty=faculty)
+                    departments.append(department)
+            self.stdout.write(f'{needed_departments} ta yangi kafedra yaratildi (jami: {len(departments)})')
 
             # Yo'nalishlarni yaratish
             self.stdout.write('Yo\'nalishlar yaratilmoqda...')
-            for i in range(specialties_count):
-                # Random kafedradan boshlab, uning fakultetini olish
-                department = random.choice(departments)
-                faculty = department.faculty
-                
-                SpecialtyFactory(
-                    faculty=faculty,
-                    department=department
-                )
-            self.stdout.write(f'{specialties_count} ta yo\'nalish yaratildi')
+            existing_specialties_count = Specialty.objects.count()
+            needed_specialties = max(0, specialties_count - existing_specialties_count)
+            
+            specialties_created = 0
+            if needed_specialties > 0 and departments:
+                for i in range(needed_specialties):
+                    # Random kafedradan boshlab, uning fakultetini olish
+                    department = random.choice(departments)
+                    faculty = department.faculty
+                    
+                    SpecialtyFactory(
+                        faculty=faculty,
+                        department=department
+                    )
+                    specialties_created += 1
+            self.stdout.write(f'{specialties_created} ta yangi yo\'nalish yaratildi')
 
             # Fakultet xodimlarini yaratish
             self.stdout.write('Fakultet xodimlari tayinlanmoqda...')
@@ -181,14 +212,48 @@ class Command(BaseCommand):
                         pass
             self.stdout.write(f'{department_employees_count} ta kafedra xodimi tayinlandi')
 
+            # Bosh sahifa matnlarini yaratish
+            self.stdout.write('Bosh sahifa matnlari yaratilmoqda...')
+            from apps.structure.models.main_info import MENU_PARTS
+            
+            home_page_texts_created = 0
+            texts_per_type = home_page_texts_count // len(MENU_PARTS)  # Har bir type uchun nechta
+            
+            for menu_type, menu_name in MENU_PARTS:
+                # Har bir type uchun mavjud matnlar sonini tekshirish
+                existing_texts_for_type = HomePageText.objects.filter(type=menu_type).count()
+                needed_texts_for_type = max(0, texts_per_type - existing_texts_for_type)
+                
+                for i in range(needed_texts_for_type):
+                    try:
+                        if menu_type == 'main':
+                            # main type uchun URL bilan yaratish
+                            HomePageTextFactory(
+                                type=menu_type,
+                                title=f"{menu_name} - {existing_texts_for_type + i + 1}",
+                                url=f"https://adu.uz/{menu_type}/{existing_texts_for_type + i + 1}"
+                            )
+                        else:
+                            # Boshqa typelar uchun URL siz
+                            HomePageTextFactory(
+                                type=menu_type,
+                                title=f"{menu_name} - {existing_texts_for_type + i + 1}"
+                            )
+                        home_page_texts_created += 1
+                    except Exception as e:
+                        self.stdout.write(f"HomePageText yaratishda xatolik: {e}")
+                        
+            self.stdout.write(f'{home_page_texts_created} ta yangi bosh sahifa matni yaratildi')
+
         self.stdout.write(
             self.style.SUCCESS(
                 f'\nStructure app uchun ma\'lumotlar muvaffaqiyatli yaratildi!\n'
-                f'Fakultetlar: {faculties_count}\n'
-                f'Xodimlar: {employees_count}\n'
-                f'Kafedralar: {departments_count}\n'
-                f'Yo\'nalishlar: {specialties_count}\n'
+                f'Fakultetlar: {needed_faculties} yangi (jami: {len(faculties)})\n'
+                f'Xodimlar: {needed_employees} yangi (jami: {len(employees)})\n'
+                f'Kafedralar: {needed_departments} yangi (jami: {len(departments)})\n'
+                f'Yo\'nalishlar: {specialties_created} yangi\n'
                 f'Fakultet xodimlari: {faculty_employees_count}\n'
-                f'Kafedra xodimlari: {department_employees_count}'
+                f'Kafedra xodimlari: {department_employees_count}\n'
+                f'Bosh sahifa matnlari: {home_page_texts_created} yangi'
             )
         )

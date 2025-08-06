@@ -5,8 +5,8 @@ from faker import Faker
 import random
 from datetime import date, timedelta
 
-from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
-from .models.employees import Employee
+from ..models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
+from ..models.employees import Employee
 from apps.users.models import User
 
 fake = Faker('uz_UZ')  # Uzbek locale

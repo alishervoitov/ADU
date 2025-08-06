@@ -49,16 +49,11 @@ class Command(BaseCommand):
         if options['blog_only']:
             self.populate_blog(options['clear_all'])
             return
-            
-        if options['common_only']:
-            self.populate_common(options['clear_all'])
-            return
 
         # Barcha applar uchun
         self.populate_users(options['clear_all'])
         self.populate_structure(options['clear_all'])
         self.populate_blog(options['clear_all'])
-        self.populate_common(options['clear_all'])
         
         self.stdout.write(
             self.style.SUCCESS('\n' + '='*50)

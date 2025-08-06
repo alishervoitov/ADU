@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from .models.employees import Employee
 from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
-
+from .models.main_info import HomePageText
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
@@ -230,4 +230,11 @@ class DepartmentEmployeeAdmin(admin.ModelAdmin):
       def employee_id(self, obj):
             return obj.employee.employee_id_number if obj.employee else '-'
       
+
+@admin.register(HomePageText)
+class HomePageTextAdmin(admin.ModelAdmin):
+      list_display = ('id', 'title', 'created_at', 'updated_at')
+      list_display_links = ('id', 'title')
+      search_fields = ('title', 'content')
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       

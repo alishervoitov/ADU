@@ -3,17 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.models.employees import Employee
 
-# class UniversityInfo(TimeStamped, Authored):
-#     name = models.CharField(max_length=255, verbose_name=_("University Name"))
-#     location = models.CharField(max_length=255, verbose_name=_("Location"))
-#     established = models.DateField(verbose_name=_("Established Date"))
-
-#     class Meta:
-#         verbose_name = _("University Information")
-#         verbose_name_plural = _("Universities Information")
-
-#     def __str__(self):
-#         return self.name
 
 class Faculty(TimeStamped, Authored):
     '''Fakultet'''
