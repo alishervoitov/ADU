@@ -23,7 +23,7 @@ class NewTypeListView(APIView):
 class NewsListView(ListAPIView):
     permission_classes = [AllowAny]
     queryset = News.objects.all()
-    serializer_class = serializers.NewsSerializer
+    serializer_class = serializers.NewsShortSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['title', 'type__name']
     filterset_fields = ['type']
@@ -39,12 +39,21 @@ class NewsListView(ListAPIView):
                 required=False
             )
         ],
-        responses={200: serializers.NewsSerializer(many=True)},
+        responses={200: serializers.NewsShortSerializer(many=True)},
         operation_summary="List News with filtering",
         operation_description="Get a list of News objects with optional filtering by type"
     )
     def get(self, request, *args, **kwargs):
-        is_short = request.query_params.get('short', None)
-        if is_short:
-            self.serializer_class = serializers.NewsShortSerializer
         return super().get(request, *args, **kwargs)
+
+
+class NewsRetrieveView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            news = News.objects.get(pk=pk)
+            serializer = serializers.NewsSerializer(news)
+            return Response(serializer.data)
+        except News.DoesNotExist:
+            return Response({"detail": "News not found"}, status=404)
