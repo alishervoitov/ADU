@@ -3,7 +3,18 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.enum import WeekDaysEnum
 from datetime import date
-from django.contrib.postgres.fields import ArrayField
+
+class AdmissionDaysEnum(models.Model):
+    """Model to represent admission days for employees."""
+    day = models.CharField(max_length=15, choices=WeekDaysEnum.choices(), unique=True)
+
+    class Meta:
+        verbose_name = _("Admission Day")
+        verbose_name_plural = _("Admission Days")
+
+    def __str__(self):
+        return self.day
+
 
 class UserInfo(TimeStamped, Authored):
     '''Foydalanuvchi Umumiy Abstrakt malumotlari'''
@@ -163,9 +174,10 @@ class Employee(UserInfo):
         _("Xodim turi"), max_length=255, choices=EMPLOYEE_TYPE, default="teacher")
     is_foreign = models.BooleanField(_("Chet el fuqarosi"), default=False)
     # qabul vaqti with WeekDaysEnum multi choise more selected
-    admission_dates = ArrayField(
-        models.CharField(choices=WeekDaysEnum.choices(), max_length=15, null=True, blank=True),
-        null=True, blank=True
+    admission_dates = models.ManyToManyField(
+        AdmissionDaysEnum,
+        verbose_name=_("Qabul kunlari"),
+        blank=True
     )
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
     def __str__(self):

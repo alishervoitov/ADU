@@ -41,7 +41,8 @@ class EmployeeAdmin(admin.ModelAdmin):
             ('Kasbiy ma\'lumotlar', {
                   'fields': (
                   'specialty', 'academicDegree', 'academicRank', 
-                  'employmentForm', 'staffPosition', 'employeeType', 'is_foreign'
+                  'employmentForm', 'staffPosition', 'employeeType', 'is_foreign',
+                  'admission_dates', 'admission_time'
                   )
             }),
             ('Tizim ma\'lumotlari', {

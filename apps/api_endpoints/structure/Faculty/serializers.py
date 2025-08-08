@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.structure.models import Faculty, Employee, Department
+from apps.structure.models import Faculty, Employee, Department, AdmissionDaysEnum
 from django.db.models import Q
 
 
@@ -13,8 +13,15 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'description',
         )
 
+class AdmissionDaysEnumSerializer(serializers.Serializer):
+    
+    class Meta:
+        model = AdmissionDaysEnum
+        fields = ('day',)
+
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    admission_dates = AdmissionDaysEnumSerializer(many=True, read_only=True)
     class Meta:
         model = Employee
         fields = (
