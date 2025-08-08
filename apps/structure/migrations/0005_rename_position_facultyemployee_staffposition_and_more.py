@@ -4,6 +4,35 @@ import django.contrib.postgres.fields
 from django.db import migrations, models
 
 
+def skip_for_sqlite(apps, schema_editor):
+    """Skip ArrayField operations for SQLite"""
+    if schema_editor.connection.vendor == 'sqlite':
+        return
+    
+    # For PostgreSQL, apply the field change
+    Employee = apps.get_model('structure', 'Employee')
+    schema_editor.alter_field(
+        Employee,
+        Employee._meta.get_field('admission_dates'),
+        django.contrib.postgres.fields.ArrayField(
+            base_field=models.CharField(
+                blank=True, 
+                choices=[
+                    ('Monday', 'MONDAY'), ('Tuesday', 'TUESDAY'), 
+                    ('Wednesday', 'WEDNESDAY'), ('Thursday', 'THURSDAY'), 
+                    ('Friday', 'FRIDAY'), ('Saturday', 'SATURDAY'), 
+                    ('Sunday', 'SUNDAY')
+                ], 
+                max_length=15, 
+                null=True
+            ), 
+            size=None, 
+            null=True, 
+            blank=True
+        )
+    )
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -21,9 +50,8 @@ class Migration(migrations.Migration):
             name='order',
             field=models.PositiveSmallIntegerField(default=0, verbose_name='Tartib raqami'),
         ),
-        migrations.AlterField(
-            model_name='employee',
-            name='admission_dates',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(blank=True, choices=[('Monday', 'MONDAY'), ('Tuesday', 'TUESDAY'), ('Wednesday', 'WEDNESDAY'), ('Thursday', 'THURSDAY'), ('Friday', 'FRIDAY'), ('Saturday', 'SATURDAY'), ('Sunday', 'SUNDAY')], max_length=15, null=True), size=None),
+        migrations.RunPython(
+            skip_for_sqlite,
+            reverse_code=migrations.RunPython.noop,
         ),
     ]

@@ -165,6 +165,7 @@ class Employee(UserInfo):
     # qabul vaqti with WeekDaysEnum multi choise more selected
     admission_dates = ArrayField(
         models.CharField(choices=WeekDaysEnum.choices(), max_length=15, null=True, blank=True),
+        null=True, blank=True
     )
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
     def __str__(self):
