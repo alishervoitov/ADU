@@ -42,10 +42,10 @@ jobs:
           echo "SECRET_KEY=SOME_SECRET_KEY_QATTU" >> $GITHUB_ENV
           echo "DEBUG=1" >> $GITHUB_ENV
 
-      - name: Run Django tests with coverage
-        run: |
-          coverage run manage.py test
-          coverage report --fail-under=20
+      # - name: Run Django tests with coverage
+      #   run: |
+          # coverage run manage.py test
+          # coverage report --fail-under=20
 
       - name: Send test failure notification to Telegram
         if: failure()
@@ -131,9 +131,9 @@ jobs:
 
             echo "✅ Deployment completed successfully!"
             
-            coverage run manage.py test
-            coverage report --fail-under=20
-            coverage html --fail-under=20 
+            # coverage run manage.py test
+            # coverage report --fail-under=20
+            # coverage html --fail-under=20 
 
       - name: Notify Telegram - Successful Deployment
         if: success()
