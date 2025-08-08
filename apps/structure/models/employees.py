@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
+from apps.structure.enum import WeekDaysEnum
 from datetime import date
-
+from django.contrib.postgres.fields import ArrayField
 
 class UserInfo(TimeStamped, Authored):
     '''Foydalanuvchi Umumiy Abstrakt malumotlari'''
@@ -161,7 +162,11 @@ class Employee(UserInfo):
     employeeType = models.CharField(
         _("Xodim turi"), max_length=255, choices=EMPLOYEE_TYPE, default="teacher")
     is_foreign = models.BooleanField(_("Chet el fuqarosi"), default=False)
-
+    # qabul vaqti with WeekDaysEnum multi choise more selected
+    admission_dates = ArrayField(
+        models.CharField(choices=WeekDaysEnum.choices(), max_length=15, null=True, blank=True),
+    )
+    admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
     def __str__(self):
         return f"{self.full_name} - {self.staffPosition}"
 

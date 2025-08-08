@@ -87,7 +87,8 @@ class FacultyEmployee(TimeStamped, Authored):
     '''Fakultet xodimlari'''
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name="employees", verbose_name=_("Fakultet"))
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="faculty_employees", verbose_name=_("Xodim"))
-    position = models.CharField(max_length=255, choices=Employee.POSITION_SELECT, default=Employee.OTHER, verbose_name=_("Lavozim"))
+    staffPosition = models.CharField(max_length=255, choices=Employee.POSITION_SELECT, default=Employee.OTHER, verbose_name=_("Lavozim"))
+    order = models.PositiveSmallIntegerField(default=0, verbose_name=_("Tartib raqami"))
 
     class Meta:
         db_table = 'faculty_employee'

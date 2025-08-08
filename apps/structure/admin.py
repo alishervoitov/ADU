@@ -158,21 +158,21 @@ class SpecialtyAdmin(admin.ModelAdmin):
 @admin.register(FacultyEmployee)
 class FacultyEmployeeAdmin(admin.ModelAdmin):
       list_display = (
-            'id', 'faculty', 'employee_name', 'employee_id', 'position',
+            'id', 'faculty', 'employee_name', 'employee_id', 'staffPosition',
             'created_at', 'updated_at'
       )
       list_display_links = ('id',)
-      list_filter = ('faculty', 'position', 'created_at', 'updated_at')
+      list_filter = ('faculty', 'staffPosition', 'created_at', 'updated_at')
       search_fields = (
             'faculty__name', 'employee__full_name', 'employee__employee_id_number',
-            'position'
+            'staffPosition'
       )
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty', 'employee')
       
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('faculty', 'employee', 'position')
+                  'fields': ('faculty', 'employee', 'staffPosition')
             }),
             ('Tizim ma\'lumotlari', {
                   'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),

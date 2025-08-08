@@ -128,7 +128,7 @@ class FacultyEmployeeFactory(DjangoModelFactory):
     
     faculty = SubFactory(FacultyFactory)
     employee = SubFactory(EmployeeFactory)
-    position = LazyFunction(lambda: random.choice([
+    staffPosition = LazyFunction(lambda: random.choice([
         Employee.DEKAN, Employee.DEKAN_ASSISTANT, Employee.PROFESSOR, Employee.DOTSENT
     ]))
 
