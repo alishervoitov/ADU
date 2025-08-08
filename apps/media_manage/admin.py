@@ -14,7 +14,7 @@ class NewsAdmin(admin.ModelAdmin):
 
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('title', 'type', 'viewed_count')
+                  'fields': ('title', 'type', 'image', 'viewed_count')
             }),
             ('Kontent', {
                   'fields': ('content',)

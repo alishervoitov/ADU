@@ -17,6 +17,7 @@ class NewType(TimeStamped, Authored):
 
 class News(TimeStamped, Authored):
     title = models.CharField(max_length=255, verbose_name="News Title")
+    image = models.ImageField(upload_to='news/images/', verbose_name="Asosiy rasm")
     content = CKEditor5Field('Content', config_name='default')
     type = models.ForeignKey(
         NewType, on_delete=models.SET_NULL, related_name='news', verbose_name="Type",
