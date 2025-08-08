@@ -1,6 +1,17 @@
 from rest_framework import serializers
-from apps.structure.models import Faculty, Employee
+from apps.structure.models import Faculty, Employee, Department
 from django.db.models import Q
+
+
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Department
+        fields = (
+            'id',
+            'name',
+            'code',
+            'description',
+        )
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -38,7 +49,7 @@ class FacultyDetailSerializer(serializers.ModelSerializer):
         return [EmployeeSerializer(emp.employee).data for emp in obj.employees.filter(~Q(staffPosition=Employee.DEKAN))]
 
     def get_departments(self, obj):
-        return []
+        return DepartmentSerializer(obj.departments.all(), many=True).data
 
     class Meta:
         model = Faculty
