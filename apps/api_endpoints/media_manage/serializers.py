@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.media_manage.models import News, NewType
+from apps.media_manage.models import News, NewType, DocumentType, Documents
 
 
 class NewTypeSerializer(serializers.ModelSerializer):
@@ -22,3 +22,17 @@ class NewsShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ('id', 'title', 'image', 'type', 'viewed_count', 'created_at_str', 'updated_at_str')
+
+
+class DocumentTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DocumentType
+        fields = ('id', 'name')
+
+
+class DocumentsSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source='type.name', allow_null=True)
+
+    class Meta:
+        model = Documents
+        fields = ('id', 'title', 'slug', 'url', 'type', 'created_at_str', 'updated_at_str')
