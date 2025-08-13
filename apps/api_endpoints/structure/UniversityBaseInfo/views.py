@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.generics import RetrieveAPIView
 from apps.structure.models import UniversityBaseInfo, Employee
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema
@@ -39,3 +39,9 @@ class EmployeeListView(APIView):
         employees = Employee.objects.filter(staffPosition=staffPosition)
         serializer = serializers.EmployeeSerializer(employees, many=True)
         return Response(serializer.data)
+
+
+class EmployeeRetrieveAPIView(RetrieveAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = serializers.EmployeeDetailSerializer
+    permission_classes = [AllowAny]

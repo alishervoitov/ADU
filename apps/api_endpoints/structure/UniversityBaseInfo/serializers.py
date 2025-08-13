@@ -18,6 +18,20 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'email',
             'admission_dates',
             'admission_time',
+            
+        )
+
+
+class EmployeeDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = (
+            'id',
+            'full_name',
+            'phone',
+            'email',
+            'admission_dates',
+            'admission_time',
             'specialty',
             'academicDegree',
             'academicRank',
@@ -26,5 +40,4 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'photo',
             'birthday',
             'tasks'
-            
         )
