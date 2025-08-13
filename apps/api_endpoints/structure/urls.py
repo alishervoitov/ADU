@@ -7,7 +7,8 @@ from . import (
     UniversityBaseInfoView,
     FacultyListView,
     FacultyRetrieveView,
-    DepartmentDetailView
+    DepartmentDetailView,
+    EmployeeListView,
 )
 
 app_name = "structure"
@@ -19,4 +20,5 @@ urlpatterns = [
     path("FacultyList", FacultyListView.as_view(), name="faculty_list"),
     path("Faculty/<int:pk>", FacultyRetrieveView.as_view(), name="faculty_detail"),
     path("Department/<int:pk>", DepartmentDetailView.as_view(), name="department_detail"),
+    path("Employee", EmployeeListView.as_view(), name="employee_list"),
 ]

@@ -149,7 +149,9 @@ class Employee(UserInfo):
         (DEKAN_ASSISTANT, _("Dekan muovini")),
         (TUTOR, _("Tyutor")),
         (ENGINEER, _("1-toifali muhandis")),
-        (OTHER, _("Boshqa"))
+        (OTHER, _("Boshqa")),
+        ("rector", _("Rektor")),
+        ("vice-rector", _("Prorektor")),
     )
 
     EMPLOYEE_TYPE = (
