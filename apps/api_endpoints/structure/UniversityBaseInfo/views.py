@@ -26,7 +26,7 @@ class EmployeeListView(APIView):
             openapi.Parameter(
                 'staffPosition',
                 openapi.IN_QUERY,
-                description="Filter employees by staff position",
+                description="Filter employees by staff position (e.g., 'rector', 'vice-rector', etc.)",
                 type=openapi.TYPE_STRING,
                 required=True
             )
