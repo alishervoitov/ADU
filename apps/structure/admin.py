@@ -48,7 +48,13 @@ class EmployeeAdmin(admin.ModelAdmin):
             ('Tizim ma\'lumotlari', {
                   'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
                   'classes': ('collapse',)
-            })
+            }),
+            (
+                  'Qo\'shimcha ma\'lumotlar', {
+                        'fields': ('tasks',),
+                        'classes': ('collapse',)
+                  }
+            )
       )
       
       def get_queryset(self, request):
