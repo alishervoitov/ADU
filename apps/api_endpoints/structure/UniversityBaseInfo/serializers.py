@@ -24,6 +24,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'employmentForm',
             'staffPosition',
             'photo',
-            'birthday'
+            'birthday',
+            'tasks'
             
         )
