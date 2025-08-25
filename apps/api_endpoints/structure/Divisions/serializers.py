@@ -7,11 +7,11 @@ from django.db.models import Q
 class DivisionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Divisions
-        fields = ['id', 'name', 'icon']
+        fields = ['id', 'name', 'icon', 'slug']
 
 
 class DivisionDetailSerializer(serializers.ModelSerializer):
     decan = EmployeeSerializer(read_only=True)
     class Meta:
         model = Divisions
-        fields = ['id', 'name', 'division_type', 'content', 'banner', 'icon', 'decan']
+        fields = ['id', 'name', 'division_type', 'content', 'banner', 'icon', 'slug', 'decan']
