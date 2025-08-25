@@ -17,6 +17,7 @@ class Faculty(TimeStamped, Authored):
     ]
 
     name = models.CharField(max_length=255, verbose_name=_("Fakultet nomi"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("Slug"))
     xmn_id = models.CharField(max_length=20, verbose_name=_("XMN ID"))
     code = models.CharField(max_length=20, verbose_name=_("Kod"))
     description = models.TextField(blank=True, null=True, verbose_name=_("Tavsif"))
@@ -37,6 +38,7 @@ class Faculty(TimeStamped, Authored):
 class Department(TimeStamped, Authored):
     '''Kafedra'''
     name = models.CharField(max_length=255, verbose_name=_("Kafedra nomi"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("Slug"))
     xmn_id = models.CharField(max_length=10, verbose_name=_("XMN ID"))
     code = models.CharField(max_length=20, verbose_name=_("Kod"))
     faculty = models.ForeignKey(Faculty, on_delete=models.RESTRICT, related_name="departments", verbose_name=_("Fakultet"))
@@ -67,6 +69,7 @@ class Specialty(TimeStamped, Authored):
         (13, _("Bo'lim")),
     )
     name = models.CharField(max_length=255, verbose_name=_("Yo'nalish nomi"))
+    slug = models.SlugField(max_length=255, unique=True, verbose_name=_("Slug"))
     xmn_id = models.CharField(max_length=10, verbose_name=_("XMN ID"))
     code = models.CharField(max_length=15, verbose_name=_("Kod"))
     faculty = models.ForeignKey(Faculty, on_delete=models.RESTRICT, related_name="specialities", verbose_name=_("Fakultet"))

@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.enum import WeekDaysEnum
 from datetime import date
+from django_ckeditor_5.fields import CKEditor5Field
+
 
 class AdmissionDaysEnum(models.Model):
     """Model to represent admission days for employees."""
@@ -182,6 +184,10 @@ class Employee(UserInfo):
         blank=True
     )
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
+    tasks = CKEditor5Field(config_name='default', 
+                           verbose_name=_("Ish vazifalari"), blank=True, null=True)
+    
+    
     def __str__(self):
         return f"{self.full_name} - {self.staffPosition}"
 

@@ -29,6 +29,12 @@ class HomePageText(TimeStamped, Authored):
         blank=True,
         null=True
     )
+    banner = models.ImageField(
+        upload_to='home_page/',
+        verbose_name=_("Banner Image"),
+        blank=True,
+        null=True
+    )
     
     class Meta:
         verbose_name = _("Home Page Text")

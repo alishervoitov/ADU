@@ -46,7 +46,13 @@ class EmployeeAdmin(admin.ModelAdmin):
             ('Tizim ma\'lumotlari', {
                   'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
                   'classes': ('collapse',)
-            })
+            }),
+            (
+                  'Qo\'shimcha ma\'lumotlar', {
+                        'fields': ('tasks',),
+                        'classes': ('collapse',)
+                  }
+            )
       )
       
       def get_queryset(self, request):
@@ -82,7 +88,7 @@ class FacultyAdmin(admin.ModelAdmin):
       list_filter = ('created_at', 'updated_at')
       search_fields = ('name', 'xmn_id', 'code', 'description')
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      prepopulated_fields = {'code': ('name',)}
+      prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
       ordering = ('position', 'name')
       inlines = [FacultyEmployeeInline]
       
@@ -156,7 +162,7 @@ class SpecialtyAdmin(admin.ModelAdmin):
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty', 'department')
       ordering = ('faculty', 'department', 'position', 'name')
-      
+      prepopulated_fields = {'slug': ('name',)}
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
                         'fields': ('name', 'xmn_id', 'code', 'faculty', 'department')

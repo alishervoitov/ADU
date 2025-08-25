@@ -16,9 +16,8 @@ class HomePageTextListView(APIView):
 
     def get(self, request, *args, **kwargs):
         texts = HomePageText.objects.all()
-        serializer = serializers.HomePageSerializer(texts)
+        serializer = serializers.HomePageSerializer(texts, context={"request": request})
         return Response(serializer.data)
-
 
 
 class HomePageTextFilterListAPIView(ListAPIView):
