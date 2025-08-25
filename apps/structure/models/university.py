@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.models.employees import Employee
+from apps.structure.enum import DivisionTypeEnum
 from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 
@@ -121,13 +122,9 @@ class DepartmentEmployee(TimeStamped, Authored):
 
 class Divisions(TimeStamped, Authored):
     '''Institut'''
-    DIVISION_TYPE = (
-        (1, _("Markaz/Bo'lim")),
-        (2, _("Texnikum/Litsey")),
-    )
     name = models.CharField(max_length=255, verbose_name=_("Institut nomi"))
     code = models.CharField(max_length=20, verbose_name=_("Kod"), null=True, blank=True)
-    division_type = models.IntegerField(choices=DIVISION_TYPE, default=1, verbose_name=_("Institut turi"))
+    division_type = models.CharField(max_length=50, choices=DivisionTypeEnum.choices, verbose_name=_("Institut turi"))
     content = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
     banner = models.ImageField(upload_to="institution/banner", blank=True, null=True, verbose_name=_("Banner"))
     icon = models.ImageField(upload_to="institution/icon", blank=True, null=True, verbose_name=_("Ikon"))
@@ -157,3 +154,37 @@ class Divisions(TimeStamped, Authored):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+
+class DivisionDocument(TimeStamped, Authored):
+    division = models.ForeignKey(Divisions, on_delete=models.CASCADE, related_name="documents", verbose_name=_("Institut"))
+    name = models.CharField(max_length=150, verbose_name=_("Hujjat nomi"))
+    url = models.URLField(max_length=255, verbose_name=_("URL"), null=True, blank=True)
+    file = models.FileField(upload_to='documents/files/', verbose_name=_("Fayl"), null=True, blank=True)
+  
+    slug = models.SlugField(max_length=255, verbose_name=_("Slug"), null=True, blank=True, unique=True)
+
+    class Meta:
+        db_table = 'division_document'
+        verbose_name = _("Institut hujjati")
+        verbose_name_plural = _("Institut hujjatlari")
+
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)[:50]
+            slug = base_slug
+            counter = 1
+            while DivisionDocument.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    @property 
+    def get_file_or_url(self):
+        if self.file:
+            return self.file.url
+        return self.url

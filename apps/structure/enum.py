@@ -29,4 +29,16 @@ class MenuItemEnum(Enum):
     @classmethod
     def choices(cls):
         return [(item.value, item.name) for item in cls]
+
+
+class DivisionTypeEnum(Enum):
+    CENTER_DEPARTMENT = "center_department"  # Markaz/Bo'lim
+    TECHNICAL_LYCEUM = "technical_lyceum"    # Texnikum/Litsey
+    BACHELOR = "bachelor"                     # Bakalavriyat
+    MASTER = "master"                        # Magistratura
+    ASPIRANTURE = "aspiranture"            # Aspirantura
+    DOCTORANTURE = "doctoranture"          # Doktorantura
     
+    @classmethod
+    def choices(cls):
+        return [(item.value, item.name) for item in cls]

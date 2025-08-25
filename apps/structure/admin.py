@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models.employees import Employee
-from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee, Divisions
+from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee, Divisions, DivisionDocument
 from .models.main_info import HomePageText, UniversityBaseInfo
 from .models.documents import Document, MenuItem
 
@@ -270,6 +270,15 @@ class UniversityBaseInfoAdmin(admin.ModelAdmin):
             'email', 'address', 'created_at', 'updated_at'
       )
       
+class DivisionDocumentInline(admin.TabularInline):
+      model = DivisionDocument
+      extra = 1
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+      fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
+      show_change_link = True
+      prepopulated_fields = {'slug': ('name',)}
+      autocomplete_fields = ('division',)
+
 
 @admin.register(Divisions)
 class DivisionsAdmin(admin.ModelAdmin):
@@ -282,6 +291,7 @@ class DivisionsAdmin(admin.ModelAdmin):
       search_fields = ('name', 'code', 'content')
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       prepopulated_fields = {'slug': ('name',)}
+      inlines = [DivisionDocumentInline]
 
 
 class DocumentInline(admin.TabularInline):

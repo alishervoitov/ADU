@@ -1,4 +1,3 @@
-
 from django.urls import path
 
 from . import (
@@ -9,8 +8,9 @@ from . import (
     FacultyRetrieveView,
     DepartmentDetailView,
     EmployeeListView,
-    DivisionListView,
-    DivisionDetailView
+    DivisionDetailView,
+    DivisionListByTypeView,
+    MenuItemByTypeView
 )
 
 app_name = "structure"
@@ -23,6 +23,7 @@ urlpatterns = [
     path("Faculty/<int:pk>", FacultyRetrieveView.as_view(), name="faculty_detail"),
     path("Department/<int:pk>", DepartmentDetailView.as_view(), name="department_detail"),
     path("Employee", EmployeeListView.as_view(), name="employee_list"),
-    path("Divisions", DivisionListView.as_view(), name="division_list"),
-    path("Divisions/<int:pk>", DivisionDetailView.as_view(), name="division_detail"),
+    path("DivisionsList/<str:division_type>", DivisionListByTypeView.as_view(), name="division_by_type"),
+    path("DivisionDetail/<int:pk>", DivisionDetailView.as_view(), name="division_detail"),
+    path("MenuItem/<str:menu_type>", MenuItemByTypeView.as_view(), name="menu_item_by_type"),
 ]
