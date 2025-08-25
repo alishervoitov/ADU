@@ -19,3 +19,14 @@ class WeekDaysEnum(Enum):
     def choices(cls):
         return [(day.value, day.name) for day in cls]
     
+
+class MenuItemEnum(Enum):
+    CHARTER = "charter" # universitet nizomi
+    HISTORY = "history" # universitet tarixi
+    UNIVERSITY_COUNCIL = "council" # universitet kengashi
+    SCIENTIFIC_COUNCIL = "scientific_council" # ilmiy kengash
+    
+    @classmethod
+    def choices(cls):
+        return [(item.value, item.name) for item in cls]
+    

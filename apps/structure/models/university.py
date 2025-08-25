@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.models.employees import Employee
+from ckeditor.fields import RichTextField
+from django.utils.text import slugify
 
 
 class Faculty(TimeStamped, Authored):
@@ -115,3 +117,43 @@ class DepartmentEmployee(TimeStamped, Authored):
 
     def __str__(self):
         return f"{self.id}"
+
+
+class Divisions(TimeStamped, Authored):
+    '''Institut'''
+    DIVISION_TYPE = (
+        (1, _("Markaz/Bo'lim")),
+        (2, _("Texnikum/Litsey")),
+    )
+    name = models.CharField(max_length=255, verbose_name=_("Institut nomi"))
+    code = models.CharField(max_length=20, verbose_name=_("Kod"), null=True, blank=True)
+    division_type = models.IntegerField(choices=DIVISION_TYPE, default=1, verbose_name=_("Institut turi"))
+    content = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
+    banner = models.ImageField(upload_to="institution/banner", blank=True, null=True, verbose_name=_("Banner"))
+    icon = models.ImageField(upload_to="institution/icon", blank=True, null=True, verbose_name=_("Ikon"))
+    position = models.PositiveSmallIntegerField(default=0, verbose_name=_("Pozitsiya"))
+    decan = models.ForeignKey(
+        Employee, on_delete=models.SET_NULL, related_name="institutions", verbose_name=_("Dekan"),
+        null=True, blank=True
+    )   
+    slug = models.SlugField(max_length=255, verbose_name=_("Slug"), null=True, blank=True, unique=True)
+    view_count = models.PositiveIntegerField(default=0, verbose_name=_("Ko'rishlar soni"))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'institution'
+        verbose_name = _("Institut")
+        verbose_name_plural = _("Institutlar")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name)[:50]
+            slug = base_slug
+            counter = 1
+            while Divisions.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)

@@ -136,7 +136,7 @@ class Employee(UserInfo):
     DEPARTMENT_USER = "16"
     TUTOR = "tutor"
     ENGINEER = "engineer"
-    DEKAN = "dekan"
+    DEKAN = "dekan" 
     DEKAN_ASSISTANT = "dekan_assistant"
     OTHER = "other"
 

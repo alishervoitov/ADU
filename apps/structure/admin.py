@@ -1,10 +1,8 @@
 from django.contrib import admin
-from django.utils.html import format_html
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
 from .models.employees import Employee
-from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee
+from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee, Divisions
 from .models.main_info import HomePageText, UniversityBaseInfo
+from .models.documents import Document, MenuItem
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
@@ -61,7 +59,23 @@ class EmployeeAdmin(admin.ModelAdmin):
             qs = super().get_queryset(request)
             return qs.select_related('created_by', 'updated_by')
       
-      
+
+# Create inline classes for employees
+class FacultyEmployeeInline(admin.TabularInline):
+      model = FacultyEmployee
+      extra = 1
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+      fields = ('employee', 'staffPosition', 'created_at', 'updated_at')
+      autocomplete_fields = ('employee',)
+      show_change_link = True
+
+class DepartmentEmployeeInline(admin.TabularInline):
+      model = DepartmentEmployee
+      extra = 1
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+      fields = ('employee', 'position', 'created_at', 'updated_at')
+      autocomplete_fields = ('employee',)
+      show_change_link = True
 
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
@@ -76,18 +90,19 @@ class FacultyAdmin(admin.ModelAdmin):
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
       ordering = ('position', 'name')
+      inlines = [FacultyEmployeeInline]
       
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('name', 'slug', 'xmn_id', 'code', 'description', 'position')
+                        'fields': ('name', 'xmn_id', 'code', 'description', 'position')
             }),
             ('Media fayllar', {
-                  'fields': ('banner', 'icon'),
-                  'classes': ('collapse',)
+                        'fields': ('banner', 'icon'),
+                        'classes': ('collapse',)
             }),
             ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
+                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
+                        'classes': ('collapse',)
             })
       )
       
@@ -113,14 +128,15 @@ class DepartmentAdmin(admin.ModelAdmin):
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty',)
       ordering = ('faculty', 'position', 'name')
-      prepopulated_fields = {'slug': ('name',)}
+      inlines = [DepartmentEmployeeInline]
+      
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('name', 'slug', 'xmn_id', 'code', 'faculty', 'description', 'position')
+                        'fields': ('name', 'xmn_id', 'code', 'faculty', 'description', 'position')
             }),
             ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
+                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
+                        'classes': ('collapse',)
             })
       )
       
@@ -149,18 +165,18 @@ class SpecialtyAdmin(admin.ModelAdmin):
       prepopulated_fields = {'slug': ('name',)}
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('name', 'slug', 'xmn_id', 'code', 'faculty', 'department')
+                        'fields': ('name', 'xmn_id', 'code', 'faculty', 'department')
             }),
             ('Ta\'lim ma\'lumotlari', {
-                  'fields': ('educationType', 'localityType', 'description', 'position')
+                        'fields': ('educationType', 'localityType', 'description', 'position')
             }),
             ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
+                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
+                        'classes': ('collapse',)
             })
       )
       
-      
+            
 
 @admin.register(FacultyEmployee)
 class FacultyEmployeeAdmin(admin.ModelAdmin):
@@ -176,26 +192,26 @@ class FacultyEmployeeAdmin(admin.ModelAdmin):
       )
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty', 'employee')
-      
+
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('faculty', 'employee', 'staffPosition')
+                        'fields': ('faculty', 'employee', 'staffPosition')
             }),
             ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
+                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
+                        'classes': ('collapse',)
             })
       )
-      
+
       @admin.display(description='Xodim ismi')
       def employee_name(self, obj):
             return obj.employee.full_name if obj.employee else '-'
-      
+
       @admin.display(description='Xodim ID')
       def employee_id(self, obj):
             return obj.employee.employee_id_number if obj.employee else '-'
-      
-      
+            
+            
 
 @admin.register(DepartmentEmployee)
 class DepartmentEmployeeAdmin(admin.ModelAdmin):
@@ -214,7 +230,7 @@ class DepartmentEmployeeAdmin(admin.ModelAdmin):
       )
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('department', 'employee')
-      
+
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
                   'fields': ('department', 'employee', 'position')
@@ -224,19 +240,19 @@ class DepartmentEmployeeAdmin(admin.ModelAdmin):
                   'classes': ('collapse',)
             })
       )
-      
+
       @admin.display(description='Fakultet')
       def department_faculty(self, obj):
             return obj.department.faculty.name if obj.department and obj.department.faculty else '-'
-      
+
       @admin.display(description='Xodim ismi')
       def employee_name(self, obj):
             return obj.employee.full_name if obj.employee else '-'
-      
+
       @admin.display(description='Xodim ID')
       def employee_id(self, obj):
             return obj.employee.employee_id_number if obj.employee else '-'
-      
+
 
 @admin.register(HomePageText)
 class HomePageTextAdmin(admin.ModelAdmin):
@@ -254,3 +270,40 @@ class UniversityBaseInfoAdmin(admin.ModelAdmin):
             'email', 'address', 'created_at', 'updated_at'
       )
       
+
+@admin.register(Divisions)
+class DivisionsAdmin(admin.ModelAdmin):
+      list_display = (
+            'id', 'name', 'division_type', 'code', 'position',
+            'created_at', 'updated_at'
+      )
+      list_display_links = ('id', 'name')
+      list_filter = ('division_type', 'created_at', 'updated_at')
+      search_fields = ('name', 'code', 'content')
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+      prepopulated_fields = {'slug': ('name',)}
+
+
+class DocumentInline(admin.TabularInline):
+      model = Document
+      extra = 1
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+      fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
+      show_change_link = True
+      prepopulated_fields = {'slug': ('name',)}
+      autocomplete_fields = ('menu_item',)
+
+
+@admin.register(MenuItem)
+class MenuItemAdmin(admin.ModelAdmin):
+      list_display = (
+            'id', 'title', 'menu_type', 'position', 'view_count',
+            'created_at', 'updated_at'
+      )
+      list_display_links = ('id', 'title')
+      list_filter = ('menu_type', 'created_at', 'updated_at')
+      search_fields = ('title', 'content', 'menu_type')
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'view_count')
+      prepopulated_fields = {'slug': ('title',)}
+      ordering = ('position', 'title')
+      inlines = [DocumentInline]
