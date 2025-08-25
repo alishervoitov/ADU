@@ -27,7 +27,6 @@ class MenuItemDetailSerializer(serializers.ModelSerializer):
             'id', 
             'title', 
             'content', 
-            # 'menu_type', 
             'slug', 
             'view_count',
             'documents'

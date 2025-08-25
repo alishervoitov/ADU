@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.structure.models import Divisions, MenuItem
+from apps.structure.models import Divisions
 from apps.structure.enum import DivisionTypeEnum
 from . import serializers
 from django_filters.rest_framework import DjangoFilterBackend
@@ -12,47 +12,18 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 
-class DivisionListView(ListAPIView):
-    permission_classes = [AllowAny]
-    queryset = Divisions.objects.all()
-    serializer_class = serializers.DivisionListSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['division_type']
-    pagination_class = None
-    @swagger_auto_schema(
-        operation_summary="Institutlar ro'yxati",
-        operation_description="""
-            Divisions LIST.
-            ---
-            Division turlari:
-            center_department - Markaz/Bo'lim
-            technical_lyceum - Texnikum/Litsey
-            bachelor - Bakalavriyat
-            master - Magistratura
-        """,
-        manual_parameters=[
-            openapi.Parameter(
-                'division_type', openapi.IN_QUERY, description="Divisition type", type=openapi.TYPE_STRING,
-                enum=[choice[0] for choice in DivisionTypeEnum.choices()]
-            ),
-        ],
-    )
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-
 class DivisionDetailView(RetrieveAPIView):
     permission_classes = [AllowAny]
     queryset = Divisions.objects.all()
     serializer_class = serializers.DivisionDetailSerializer
     @swagger_auto_schema(
-        operation_summary="Institut tafsilotlari",
-        operation_description="Berilgan ID bo'yicha institut tafsilotlarini olish",
+        operation_summary="Division Detail",
+        operation_description="Berilgan ID bo'yicha Division Detailni olish",
         responses={200: serializers.DivisionDetailSerializer()},
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    # view count ni oshirish
+
     def get_object(self):
         obj = super().get_object()
         obj.view_count += 1
@@ -64,11 +35,11 @@ class DivisionListByTypeView(APIView):
     permission_classes = [AllowAny]
     
     @swagger_auto_schema(
-        operation_summary="Institut turi bo'yicha olish",
+        operation_summary="Division turi bo'yicha olish",
         operation_description="""
-            Berilgan institut turi bo'yicha institut ma'lumotlarini olish.
+            Berilgan Division turi bo'yicha Division ma'lumotlarini olish.
             ---
-            Institut turlari:
+            Division turlari:
             center_department - Markaz/Bo'lim
             technical_lyceum - Texnikum/Litsey
             bachelor - Bakalavriyat
@@ -78,11 +49,11 @@ class DivisionListByTypeView(APIView):
         """,
         responses={
             200: serializers.DivisionListSerializer(),
-            404: "Institut topilmadi"
+            404: "Division topilmadi"
         },
         manual_parameters=[
             openapi.Parameter(
-                'division_type', openapi.IN_PATH, description="Institut turi", type=openapi.TYPE_STRING,
+                'division_type', openapi.IN_PATH, description="Division turi", type=openapi.TYPE_STRING,
                 enum=[choice[0] for choice in DivisionTypeEnum.choices()]
             ),
         ],
@@ -94,6 +65,6 @@ class DivisionListByTypeView(APIView):
             return Response(serializer.data)
         else:
             return Response(
-                {"detail": "Institut topilmadi"}, 
+                {"detail": "Division topilmadi"}, 
                 status=status.HTTP_404_NOT_FOUND
             )

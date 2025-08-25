@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.structure.models import Divisions, Department, Employee, MenuItem, Document, DivisionDocument
+from apps.structure.models import Divisions, DivisionDocument
 from apps.api_endpoints.structure.Faculty.serializers import EmployeeSerializer
 from django.db.models import Q
 
@@ -30,4 +30,14 @@ class DivisionDetailSerializer(serializers.ModelSerializer):
     documents = DivisionDocumentSerializer(many=True, read_only=True)
     class Meta:
         model = Divisions
-        fields = ['id', 'name', 'division_type', 'content', 'banner', 'icon', 'slug', 'view_count', 'decan', 'documents']
+        fields = [
+            'id',
+            'name',
+            'content',
+            'banner',
+            'icon',
+            'slug',
+            'view_count',
+            'decan',
+            'documents'
+        ]
