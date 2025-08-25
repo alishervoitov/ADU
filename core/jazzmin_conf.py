@@ -3,13 +3,10 @@ JAZZMIN_SETTINGS = {
     "site_header": "ADU",
     "site_brand": "ADU",
     "site_logo": "books/img/logo.png",
-    "login_logo": None,
-    "login_logo_dark": None,
     "site_logo_classes": "img-circle",
-    "site_icon": None,
-    "welcome_sign": "Welcome to the ADU",
-    "copyright": "Acme ADU Ltd",
-    "search_model": ["users.User", "common.FrontendTranslation"],
+    "welcome_sign": "ADU boshqaruv paneliga xush kelibsiz!",
+    "copyright": "ADU University",
+    "search_model": ["users.User", "common.FrontendTranslation", "structure.Employee", "structure.Faculty", "structure.Department", "structure.Divisions", "structure.MenuItem"],
     "user_avatar": None,
 
     ############
@@ -17,10 +14,10 @@ JAZZMIN_SETTINGS = {
     ############
 
     "topmenu_links": [
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Bosh sahifa",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Yordam", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
         {"model": "users.User"},
-        {"app": "books"},
+        {"app": "structure"},
     ],
 
     #############
@@ -28,7 +25,7 @@ JAZZMIN_SETTINGS = {
     #############
 
     "usermenu_links": [
-        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"name": "Yordam", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
         {"model": "users.User"}
     ],
 
@@ -40,22 +37,44 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,
     "hide_apps": [],
     "hide_models": [],
-    "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
-    "custom_links": {
-        "books": [{
-            "name": "Make Messages", 
-            "url": "make_messages", 
-            "icon": "fas fa-comments",
-            "permissions": ["books.view_book"]
-        }]
-    },
+    "order_with_respect_to": [
+        "structure",
+        "structure.Faculty",
+        "structure.Department",
+        "structure.Specialty",
+        "structure.Employee",
+        "structure.Divisions",
+        "structure.MenuItem",
+        "structure.Document",
+        "structure.HomePageText",
+        "structure.UniversityBaseInfo",
+        "blog",
+        "users",
+        "auth",
+    ],
+    "custom_links": {},
     "icons": {
+        "structure": "fas fa-university",
+        "structure.Faculty": "fas fa-building-columns",
+        "structure.Department": "fas fa-sitemap",
+        "structure.Specialty": "fas fa-graduation-cap",
+        "structure.Employee": "fas fa-user-tie",
+        "structure.Divisions": "fas fa-layer-group",
+        "structure.MenuItem": "fas fa-bars",
+        "structure.Document": "fas fa-file-alt",
+        "structure.HomePageText": "fas fa-home",
+        "structure.UniversityBaseInfo": "fas fa-info-circle",
+        "users": "fas fa-users",
         "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
+        "users.user": "fas fa-user",
         "auth.Group": "fas fa-users",
+        "blog": "fas fa-blog",
+        "blog.FAQ": "fas fa-question-circle",
+        "blog.InteractiveService": "fas fa-cogs",
     },
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",
+
 
     #################
     # Related Modal #
