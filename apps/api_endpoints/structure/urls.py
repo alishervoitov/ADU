@@ -9,6 +9,8 @@ from . import (
     FacultyRetrieveView,
     DepartmentDetailView,
     EmployeeListView,
+    DivisionListView,
+    DivisionDetailView
 )
 
 app_name = "structure"
@@ -21,4 +23,6 @@ urlpatterns = [
     path("Faculty/<int:pk>", FacultyRetrieveView.as_view(), name="faculty_detail"),
     path("Department/<int:pk>", DepartmentDetailView.as_view(), name="department_detail"),
     path("Employee", EmployeeListView.as_view(), name="employee_list"),
+    path("Divisions", DivisionListView.as_view(), name="division_list"),
+    path("Divisions/<int:pk>", DivisionDetailView.as_view(), name="division_detail"),
 ]
