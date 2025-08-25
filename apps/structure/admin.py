@@ -60,7 +60,6 @@ class EmployeeAdmin(admin.ModelAdmin):
             return qs.select_related('created_by', 'updated_by')
       
 
-# Create inline classes for employees
 class FacultyEmployeeInline(admin.TabularInline):
       model = FacultyEmployee
       extra = 1
@@ -68,6 +67,7 @@ class FacultyEmployeeInline(admin.TabularInline):
       fields = ('employee', 'staffPosition', 'created_at', 'updated_at')
       autocomplete_fields = ('employee',)
       show_change_link = True
+
 
 class DepartmentEmployeeInline(admin.TabularInline):
       model = DepartmentEmployee
@@ -77,6 +77,7 @@ class DepartmentEmployeeInline(admin.TabularInline):
       autocomplete_fields = ('employee',)
       show_change_link = True
 
+
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
       list_display = (
@@ -85,26 +86,10 @@ class FacultyAdmin(admin.ModelAdmin):
             'created_at', 'updated_at'
       )
       list_display_links = ('id', 'name')
-      list_filter = ('created_at', 'updated_at')
       search_fields = ('name', 'xmn_id', 'code', 'description')
-      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
-      ordering = ('position', 'name')
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       inlines = [FacultyEmployeeInline]
-      
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                        'fields': ('name', 'xmn_id', 'code', 'description', 'position')
-            }),
-            ('Media fayllar', {
-                        'fields': ('banner', 'icon'),
-                        'classes': ('collapse',)
-            }),
-            ('Tizim ma\'lumotlari', {
-                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                        'classes': ('collapse',)
-            })
-      )
       
       @admin.display(description='Kafedralar soni')
       def departments_count(self, obj):
@@ -113,8 +98,7 @@ class FacultyAdmin(admin.ModelAdmin):
       @admin.display(description='Yo\'nalishlar soni')
       def specialties_count(self, obj):
             return obj.specialities.count()
-      
-      
+
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
@@ -125,20 +109,11 @@ class DepartmentAdmin(admin.ModelAdmin):
       list_display_links = ('id', 'name')
       list_filter = ('faculty', 'created_at', 'updated_at')
       search_fields = ('name', 'xmn_id', 'code', 'description', 'faculty__name')
-      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty',)
-      ordering = ('faculty', 'position', 'name')
+      prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
       inlines = [DepartmentEmployeeInline]
+      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                        'fields': ('name', 'xmn_id', 'code', 'faculty', 'description', 'position')
-            }),
-            ('Tizim ma\'lumotlari', {
-                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                        'classes': ('collapse',)
-            })
-      )
       
       @admin.display(description='Yo\'nalishlar soni')
       def specialties_count(self, obj):
@@ -177,83 +152,6 @@ class SpecialtyAdmin(admin.ModelAdmin):
       )
       
             
-
-@admin.register(FacultyEmployee)
-class FacultyEmployeeAdmin(admin.ModelAdmin):
-      list_display = (
-            'id', 'faculty', 'employee_name', 'employee_id', 'staffPosition',
-            'created_at', 'updated_at'
-      )
-      list_display_links = ('id',)
-      list_filter = ('faculty', 'staffPosition', 'created_at', 'updated_at')
-      search_fields = (
-            'faculty__name', 'employee__full_name', 'employee__employee_id_number',
-            'staffPosition'
-      )
-      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      autocomplete_fields = ('faculty', 'employee')
-
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                        'fields': ('faculty', 'employee', 'staffPosition')
-            }),
-            ('Tizim ma\'lumotlari', {
-                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                        'classes': ('collapse',)
-            })
-      )
-
-      @admin.display(description='Xodim ismi')
-      def employee_name(self, obj):
-            return obj.employee.full_name if obj.employee else '-'
-
-      @admin.display(description='Xodim ID')
-      def employee_id(self, obj):
-            return obj.employee.employee_id_number if obj.employee else '-'
-            
-            
-
-@admin.register(DepartmentEmployee)
-class DepartmentEmployeeAdmin(admin.ModelAdmin):
-      list_display = (
-            'id', 'department', 'department_faculty', 'employee_name', 
-            'employee_id', 'position', 'created_at', 'updated_at'
-      )
-      list_display_links = ('id',)
-      list_filter = (
-            'department__faculty', 'department', 'position', 
-            'created_at', 'updated_at'
-      )
-      search_fields = (
-            'department__name', 'department__faculty__name',
-            'employee__full_name', 'employee__employee_id_number', 'position'
-      )
-      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      autocomplete_fields = ('department', 'employee')
-
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                  'fields': ('department', 'employee', 'position')
-            }),
-            ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
-            })
-      )
-
-      @admin.display(description='Fakultet')
-      def department_faculty(self, obj):
-            return obj.department.faculty.name if obj.department and obj.department.faculty else '-'
-
-      @admin.display(description='Xodim ismi')
-      def employee_name(self, obj):
-            return obj.employee.full_name if obj.employee else '-'
-
-      @admin.display(description='Xodim ID')
-      def employee_id(self, obj):
-            return obj.employee.employee_id_number if obj.employee else '-'
-
-
 @admin.register(HomePageText)
 class HomePageTextAdmin(admin.ModelAdmin):
       list_display = ('id', 'title', 'created_at', 'updated_at')
