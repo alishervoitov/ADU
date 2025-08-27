@@ -68,7 +68,7 @@ class FacultyEmployeeInline(admin.StackedInline):
       model = FacultyEmployee
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('employee', 'staffPosition', 'task', 'order')
+      # fields = ('employee', 'staffPosition', 'task', 'order')
       autocomplete_fields = ('employee',)
       show_change_link = True
 
@@ -77,7 +77,7 @@ class DepartmentEmployeeInline(admin.StackedInline):
       model = DepartmentEmployee
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('employee', 'position', 'task')
+      # fields = ('employee', 'position', 'task')
       autocomplete_fields = ('employee',)
       show_change_link = True
 
@@ -161,11 +161,11 @@ class UniversityBaseInfoAdmin(admin.ModelAdmin):
             'email', 'address', 'created_at', 'updated_at'
       )
       
-class DivisionDocumentInline(admin.TabularInline):
+class DivisionDocumentInline(admin.StackedInline):
       model = DivisionDocument
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
+      # fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
       show_change_link = True
       prepopulated_fields = {'slug': ('name',)}
       autocomplete_fields = ('division',)
@@ -185,11 +185,11 @@ class DivisionsAdmin(admin.ModelAdmin):
       inlines = [DivisionDocumentInline]
 
 
-class DocumentInline(admin.TabularInline):
+class DocumentInline(admin.StackedInline):
       model = Document
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
+      # fields = ('name', 'url', 'file', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
       show_change_link = True
       prepopulated_fields = {'slug': ('name',)}
       autocomplete_fields = ('menu_item',)
