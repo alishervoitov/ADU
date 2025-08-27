@@ -378,4 +378,4 @@ Temporary Items
 *.icloud
 
 celerybeat-schedule.db
-venv
+venvgunicorn.pid
