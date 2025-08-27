@@ -153,10 +153,10 @@ class DepartmentEmployee(TimeStamped, Authored):
 
 
 class Divisions(TimeStamped, Authored):
-    '''Institut'''
-    name = models.CharField(max_length=255, verbose_name=_("Institut nomi"))
+    '''Division'''
+    name = models.CharField(max_length=255, verbose_name=_("Division nomi"))
     code = models.CharField(max_length=20, verbose_name=_("Kod"), null=True, blank=True)
-    division_type = models.CharField(max_length=50, choices=DivisionTypeEnum.choices, verbose_name=_("Institut turi"))
+    division_type = models.CharField(max_length=50, choices=DivisionTypeEnum.choices, verbose_name=_("Division turi"))
     content = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
     banner = models.ImageField(upload_to="institution/banner", blank=True, null=True, verbose_name=_("Banner"))
     icon = models.ImageField(upload_to="institution/icon", blank=True, null=True, verbose_name=_("Ikon"))
@@ -173,8 +173,8 @@ class Divisions(TimeStamped, Authored):
 
     class Meta:
         db_table = 'institution'
-        verbose_name = _("Institut")
-        verbose_name_plural = _("Institutlar")
+        verbose_name = _("Division")
+        verbose_name_plural = _("Divisions")
 
     def save(self, *args, **kwargs):
         if not self.slug:

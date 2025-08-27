@@ -26,26 +26,26 @@ class Migration(migrations.Migration):
             model_name='specialty',
             name='xmn_id',
         ),
-        # migrations.AddField(
-        #     model_name='divisiondocument',
-        #     name='name_en',
-        #     field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
-        # ),
-        # migrations.AddField(
-        #     model_name='divisiondocument',
-        #     name='name_ru',
-        #     field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
-        # ),
-        # migrations.AddField(
-        #     model_name='divisiondocument',
-        #     name='name_uz',
-        #     field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
-        # ),
-        # migrations.AddField(
-        #     model_name='divisiondocument',
-        #     name='name_uz_cyrl',
-        #     field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
-        # ),
+        migrations.AddField(
+            model_name='divisiondocument',
+            name='name_en',
+            field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
+        ),
+        migrations.AddField(
+            model_name='divisiondocument',
+            name='name_ru',
+            field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
+        ),
+        migrations.AddField(
+            model_name='divisiondocument',
+            name='name_uz',
+            field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
+        ),
+        migrations.AddField(
+            model_name='divisiondocument',
+            name='name_uz_cyrl',
+            field=models.CharField(max_length=150, null=True, verbose_name='Hujjat nomi'),
+        ),
         migrations.AlterField(
             model_name='department',
             name='code',
