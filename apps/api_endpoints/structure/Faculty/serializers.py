@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from apps.structure.models import Faculty, Employee, Department, AdmissionDaysEnum
+from apps.structure.models import Faculty, Employee, Department
+from apps.structure.enum import WeekDaysEnum
 from django.db.models import Q
 
 
@@ -13,22 +14,28 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'description',
         )
 
-class AdmissionDaysEnumSerializer(serializers.Serializer):
-    
-    class Meta:
-        model = AdmissionDaysEnum
-        fields = ('day',)
-
-
 class EmployeeSerializer(serializers.ModelSerializer):
-    admission_dates = AdmissionDaysEnumSerializer(many=True, read_only=True)
+    admission_dates = serializers.SerializerMethodField()
+    admission_days_display = serializers.SerializerMethodField()
+    
     class Meta:
         model = Employee
         fields = (
             'id', 'full_name', 'employeeType', 
             'staffPosition', 'academicRank', 'academicDegree',
-            'specialty', 'photo', 'email', 'phone', 'admission_dates', 'admission_time'
+            'specialty', 'photo', 'email', 'phone', 'admission_dates', 
+            'admission_days_display', 'admission_time'
         )
+    
+    def get_admission_dates(self, obj):
+        """Qabul kunlarini list sifatida qaytaradi"""
+        return obj.get_admission_days_list()
+    
+    def get_admission_days_display(self, obj):
+        """Qabul kunlarini o'zbek tilida qaytaradi"""
+        days = obj.get_admission_days_display()
+        # Translation obyektlarini string ga o'girish
+        return [str(day) for day in days]
 
 
 class FacultyListSerializer(serializers.ModelSerializer):

@@ -1,15 +1,17 @@
 # import enum 
 from enum import Enum
+from django.utils.translation import gettext_lazy as _
 
 # create anum for week days
 class WeekDaysEnum(Enum):
-    MONDAY = "Monday"
-    TUESDAY = "Tuesday"
-    WEDNESDAY = "Wednesday"
-    THURSDAY = "Thursday"
-    FRIDAY = "Friday"
-    SATURDAY = "Saturday"
-    SUNDAY = "Sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+    SUNDAY = "sunday"
+    
     # create a method to get all days
     @classmethod
     def get_all_days(cls):
@@ -17,7 +19,15 @@ class WeekDaysEnum(Enum):
     
     @classmethod
     def choices(cls):
-        return [(day.value, day.name) for day in cls]
+        return [
+            (cls.MONDAY.value, _("Dushanba")),
+            (cls.TUESDAY.value, _("Seshanba")),
+            (cls.WEDNESDAY.value, _("Chorshanba")),
+            (cls.THURSDAY.value, _("Payshanba")),
+            (cls.FRIDAY.value, _("Juma")),
+            (cls.SATURDAY.value, _("Shanba")),
+            (cls.SUNDAY.value, _("Yakshanba")),
+        ]
     
 
 class MenuItemEnum(Enum):

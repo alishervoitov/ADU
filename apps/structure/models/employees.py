@@ -3,19 +3,6 @@ from django.utils.translation import gettext_lazy as _
 from apps.common.models import TimeStamped, Authored
 from apps.structure.enum import WeekDaysEnum
 from datetime import date
-from django_ckeditor_5.fields import CKEditor5Field
-
-
-class AdmissionDaysEnum(models.Model):
-    """Model to represent admission days for employees."""
-    day = models.CharField(max_length=15, choices=WeekDaysEnum.choices(), unique=True)
-
-    class Meta:
-        verbose_name = _("Admission Day")
-        verbose_name_plural = _("Admission Days")
-
-    def __str__(self):
-        return self.day
 
 
 class UserInfo(TimeStamped, Authored):
@@ -163,29 +150,47 @@ class Employee(UserInfo):
         ("tutor", _("O‘quv-yordamchi va texnik xodim"))
     )
 
-    employee_id_number = models.CharField(_("Xodim ID raqami"), max_length=20)
-    meta_id = models.CharField(_("Meta ID"), max_length=20)
-    uzkadr_id = models.CharField(_("UZKADR ID"), max_length=10)
+    employee_id_number = models.CharField(_("Xodim ID raqami"), max_length=20, null=True, blank=True, unique=True)
     specialty = models.CharField(_("Mutaxassisligi"), max_length=255, null=True, blank=True)
     academicDegree = models.CharField(
-        _("Ilmiy darajasi"), max_length=255, choices=ACADEMIC_DEGREE, default=UNDEGREE)
+        _("Ilmiy darajasi"), max_length=255, choices=ACADEMIC_DEGREE, default=UNDEGREE, null=True, blank=True)
     academicRank = models.CharField(
-        _("Ilmiy unvoni"), max_length=255, choices=ACADEMIC_TITLE, default=UNTITLED)
+        _("Ilmiy unvoni"), max_length=255, choices=ACADEMIC_TITLE, default=UNTITLED, null=True, blank=True)
     employmentForm = models.CharField(
-        _("Ish shakli"), max_length=255, choices=WORK_TYPE_SELECT, default=FULL)
-    staffPosition = models.CharField(_("Lavozimi"), max_length=255, choices=POSITION_SELECT)
+        _("Ish shakli"), max_length=255, choices=WORK_TYPE_SELECT, default=FULL, null=True, blank=True)
+    staffPosition = models.CharField(_("Lavozimi"), max_length=255, choices=POSITION_SELECT, null=True, blank=True)
     employeeType = models.CharField(
         _("Xodim turi"), max_length=255, choices=EMPLOYEE_TYPE, default="teacher")
     is_foreign = models.BooleanField(_("Chet el fuqarosi"), default=False)
-    # qabul vaqti with WeekDaysEnum multi choise more selected
-    admission_dates = models.ManyToManyField(
-        AdmissionDaysEnum,
-        verbose_name=_("Qabul kunlari"),
-        blank=True
+    admission_dates = models.CharField(
+        _("Qabul kunlari"), 
+        max_length=255, 
+        blank=True,
+        help_text=_("Qabul kunlarini vergul bilan ajrating. Masalan: monday,tuesday,friday")
     )
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
-    tasks = CKEditor5Field(config_name='default', 
-                           verbose_name=_("Ish vazifalari"), blank=True, null=True)
+    
+    def get_admission_days_list(self):
+        """Qabul kunlarini list sifatida qaytaradi"""
+        if self.admission_dates:
+            return [day.strip() for day in self.admission_dates.split(',') if day.strip()]
+        return []
+    
+    def set_admission_days_list(self, days_list):
+        """List ko'rinishidagi kunlarni string sifatida saqlaydi"""
+        if days_list:
+            # Faqat valid kunlarni saqlash
+            valid_days = [day for day in days_list if day in [choice[0] for choice in WeekDaysEnum.choices()]]
+            self.admission_dates = ','.join(valid_days)
+        else:
+            self.admission_dates = ''
+    
+    def get_admission_days_display(self):
+        """Qabul kunlarini o'zbek tilida ko'rsatish uchun"""
+        days_list = self.get_admission_days_list()
+        choices_dict = dict(WeekDaysEnum.choices())
+        # Translation obyektlarini string ga o'girish
+        return [str(choices_dict.get(day, day)) for day in days_list]
     
     
     def __str__(self):

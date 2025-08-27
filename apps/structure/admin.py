@@ -3,13 +3,15 @@ from .models.employees import Employee
 from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee, Divisions, DivisionDocument
 from .models.main_info import HomePageText, UniversityBaseInfo
 from .models.documents import Document, MenuItem
+from .forms import EmployeeAdminForm
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
+      form = EmployeeAdminForm
       list_display = (
             'id', 'full_name', 'employee_id_number', 'staffPosition', 
             'academicDegree', 'academicRank', 'employmentForm', 'is_foreign',
-            'created_at', 'updated_at'
+            'get_admission_days_short', 'created_at', 'updated_at'
       )
       list_display_links = ('id', 'full_name')
       list_filter = (
@@ -18,15 +20,23 @@ class EmployeeAdmin(admin.ModelAdmin):
             'created_at', 'updated_at'
       )
       search_fields = (
-            'full_name', 'employee_id_number', 'xmn_id', 'meta_id', 
+            'full_name', 'employee_id_number', 'meta_id', 
             'uzkadr_id', 'specialty', 'email', 'phone', 'passport'
       )
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'ages')
       
+      def get_admission_days_short(self, obj):
+          """Admin list da qisqacha qabul kunlarini ko'rsatish"""
+          days = obj.get_admission_days_display()
+          # Translation obyektlarini string ga o'girish
+          days_str = [str(day) for day in days]
+          return ', '.join(days_str[:3]) + '...' if len(days_str) > 3 else ', '.join(days_str)
+      get_admission_days_short.short_description = 'Qabul kunlari'
+      
       fieldsets = (
             ('Asosiy ma\'lumotlar', {
                   'fields': (
-                  'full_name', 'xmn_id', 'employee_id_number', 'meta_id', 'uzkadr_id',
+                  'full_name', 'employee_id_number', 
                   'photo', 'image', 'gender', 'year_of_enter'
                   )
             }),
@@ -40,19 +50,13 @@ class EmployeeAdmin(admin.ModelAdmin):
                   'fields': (
                   'specialty', 'academicDegree', 'academicRank', 
                   'employmentForm', 'staffPosition', 'employeeType', 'is_foreign',
-                  'admission_dates', 'admission_time'
+                  'admission_days_choices', 'admission_time'
                   )
             }),
             ('Tizim ma\'lumotlari', {
                   'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
                   'classes': ('collapse',)
-            }),
-            (
-                  'Qo\'shimcha ma\'lumotlar', {
-                        'fields': ('tasks',),
-                        'classes': ('collapse',)
-                  }
-            )
+            })
       )
       
       def get_queryset(self, request):
@@ -60,20 +64,20 @@ class EmployeeAdmin(admin.ModelAdmin):
             return qs.select_related('created_by', 'updated_by')
       
 
-class FacultyEmployeeInline(admin.TabularInline):
+class FacultyEmployeeInline(admin.StackedInline):
       model = FacultyEmployee
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('employee', 'staffPosition', 'created_at', 'updated_at')
+      fields = ('employee', 'staffPosition', 'task', 'order')
       autocomplete_fields = ('employee',)
       show_change_link = True
 
 
-class DepartmentEmployeeInline(admin.TabularInline):
+class DepartmentEmployeeInline(admin.StackedInline):
       model = DepartmentEmployee
       extra = 1
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-      fields = ('employee', 'position', 'created_at', 'updated_at')
+      fields = ('employee', 'position', 'task')
       autocomplete_fields = ('employee',)
       show_change_link = True
 
@@ -81,13 +85,13 @@ class DepartmentEmployeeInline(admin.TabularInline):
 @admin.register(Faculty)
 class FacultyAdmin(admin.ModelAdmin):
       list_display = (
-            'id', 'name', 'xmn_id', 'code', 'position', 
+            'id', 'name', 'code', 'position', 
             'departments_count', 'specialties_count',
             'created_at', 'updated_at'
       )
       list_display_links = ('id', 'name')
-      search_fields = ('name', 'xmn_id', 'code', 'description')
-      prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
+      search_fields = ('name', 'code', 'description')
+      prepopulated_fields = {'slug': ('name',)}
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       inlines = [FacultyEmployeeInline]
       
@@ -103,14 +107,14 @@ class FacultyAdmin(admin.ModelAdmin):
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
       list_display = (
-            'id', 'name', 'faculty', 'xmn_id', 'code', 
+            'id', 'name', 'faculty', 'code', 
             'position', 'specialties_count', 'created_at', 'updated_at'
       )
       list_display_links = ('id', 'name')
       list_filter = ('faculty', 'created_at', 'updated_at')
-      search_fields = ('name', 'xmn_id', 'code', 'description', 'faculty__name')
+      search_fields = ('name', 'code', 'description', 'faculty__name')
       autocomplete_fields = ('faculty',)
-      prepopulated_fields = {'code': ('name',), 'slug': ('name',)}
+      prepopulated_fields = {'slug': ('name',)}
       inlines = [DepartmentEmployeeInline]
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       
@@ -133,23 +137,12 @@ class SpecialtyAdmin(admin.ModelAdmin):
             'faculty', 'department', 'educationType', 'localityType',
             'created_at', 'updated_at'
       )
-      search_fields = ('name', 'xmn_id', 'code', 'description', 'faculty__name', 'department__name')
+      search_fields = ('name', 'code', 'description', 'faculty__name', 'department__name')
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
       autocomplete_fields = ('faculty', 'department')
       ordering = ('faculty', 'department', 'position', 'name')
       prepopulated_fields = {'slug': ('name',)}
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                        'fields': ('name', 'xmn_id', 'code', 'faculty', 'department')
-            }),
-            ('Ta\'lim ma\'lumotlari', {
-                        'fields': ('educationType', 'localityType', 'description', 'position')
-            }),
-            ('Tizim ma\'lumotlari', {
-                        'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                        'classes': ('collapse',)
-            })
-      )
+ 
       
             
 @admin.register(HomePageText)
