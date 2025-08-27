@@ -37,7 +37,6 @@ class UserInfo(TimeStamped, Authored):
     )
 
     full_name = models.CharField(_("To'liq ism"), max_length=255)
-    xmn_id = models.CharField(_("XMN ID"), max_length=30)
     photo = models.ImageField(_("Foydalanuvchi rasmi"), upload_to="users/", null=True, blank=True)
     image = models.URLField(_("Rasm URL manzili"), null=True, blank=True)
     gender = models.CharField(_("Jinsi"), max_length=10, choices=GENDER_CHOISES)

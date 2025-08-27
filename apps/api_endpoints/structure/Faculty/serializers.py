@@ -70,7 +70,6 @@ class FacultyDetailSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'xmn_id',
             'code',
             'description',
             'banner',
