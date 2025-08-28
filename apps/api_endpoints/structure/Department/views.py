@@ -1,12 +1,9 @@
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 
 from apps.api_endpoints.structure.UniversityBaseInfo.serializers import EmployeeSerializer
-from apps.structure.models import Department, Employee
+from apps.structure.models import Department
 from . import serializers
-from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -46,11 +43,33 @@ class DepartmentDetailView(RetrieveAPIView):
                             description='Tavsif',
                             x_nullable=True
                         ),
-                        'decan': EmployeeSerializer,
+                        'decan': openapi.Schema(
+                            type=openapi.TYPE_OBJECT,
+                            properties={
+                                'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID'),
+                                'full_name': openapi.Schema(type=openapi.TYPE_STRING, description='To\'liq ismi'),
+                                'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Telefon raqami'),
+                                'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email manzili'),
+                                'admission_dates': openapi.Schema(type=openapi.TYPE_STRING, description='Qabul qilingan sana'),
+                                'admission_time': openapi.Schema(type=openapi.TYPE_STRING, description='Qabul qilingan vaqt'),
+                            },
+                            description='Dekan ma\'lumotlari',
+                            x_nullable=True
+                        ),
                         'employees': openapi.Schema(
                             type=openapi.TYPE_ARRAY,
-                            items=EmployeeSerializer,
-                            description='Employees',
+                            items=openapi.Schema(
+                                type=openapi.TYPE_OBJECT,
+                                properties={
+                                    'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='ID'),
+                                    'full_name': openapi.Schema(type=openapi.TYPE_STRING, description='To\'liq ismi'),
+                                    'phone': openapi.Schema(type=openapi.TYPE_STRING, description='Telefon raqami'),
+                                    'email': openapi.Schema(type=openapi.TYPE_STRING, description='Email manzili'),
+                                    'admission_dates': openapi.Schema(type=openapi.TYPE_STRING, description='Qabul qilingan sana'),
+                                    'admission_time': openapi.Schema(type=openapi.TYPE_STRING, description='Qabul qilingan vaqt'),
+                                }
+                            ),
+                            description='Xodimlar ro\'yxati',
                             read_only=True
                         ),
                     }
@@ -60,3 +79,4 @@ class DepartmentDetailView(RetrieveAPIView):
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
