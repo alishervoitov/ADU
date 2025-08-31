@@ -14,6 +14,7 @@ class FacultyListView(ListAPIView):
     permission_classes = [AllowAny]
     queryset = Faculty.objects.all().order_by('position')
     serializer_class = serializers.FacultyListSerializer
+    pagination_class = None
 
 
 class FacultyRetrieveView(RetrieveAPIView):
