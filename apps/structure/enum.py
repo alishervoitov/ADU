@@ -44,10 +44,7 @@ class MenuItemEnum(Enum):
 class DivisionTypeEnum(Enum):
     CENTER_DEPARTMENT = "center_department"  # Markaz/Bo'lim
     TECHNICAL_LYCEUM = "technical_lyceum"    # Texnikum/Litsey
-    BACHELOR = "bachelor"                     # Bakalavriyat
-    MASTER = "master"                        # Magistratura
-    ASPIRANTURE = "aspiranture"            # Aspirantura
-    DOCTORANTURE = "doctoranture"          # Doktorantura
+    EDUCATION = "education"                     # Ta'lim
     
     @classmethod
     def choices(cls):
