@@ -4,6 +4,7 @@ from apps.common.models import TimeStamped, Authored
 from apps.structure.enum import WeekDaysEnum
 from datetime import date
 
+from ckeditor.fields import RichTextField
 
 class UserInfo(TimeStamped, Authored):
     '''Foydalanuvchi Umumiy Abstrakt malumotlari'''
