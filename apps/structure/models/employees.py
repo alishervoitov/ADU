@@ -44,10 +44,6 @@ class UserInfo(TimeStamped, Authored):
     birthday = models.DateField(_("Tug'ilgan sana"), null=True, blank=True)
     email = models.EmailField(_("Elektron pochta"), null=True, blank=True)
     phone = models.CharField(_("Telefon raqami"), max_length=20, null=True, blank=True)
-    passport = models.CharField(_("Pasport ma'lumotlari"), max_length=255, null=True, blank=True)
-    address = models.CharField(_("Manzil"), max_length=255, blank=True, null=True)
-    citizenship = models.CharField(
-        _("Fuqarolik"), max_length=255, choices=CITIZENSHIP, default=UZBEK)
     age = models.IntegerField(_("Yosh"), default=18)
 
     @property
@@ -168,6 +164,7 @@ class Employee(UserInfo):
         help_text=_("Qabul kunlarini vergul bilan ajrating. Masalan: monday,tuesday,friday")
     )
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
+    task = RichTextField(verbose_name=_("Vazifalari"), null=True, blank=True)
     
     def get_admission_days_list(self):
         """Qabul kunlarini list sifatida qaytaradi"""
