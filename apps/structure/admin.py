@@ -16,12 +16,11 @@ class EmployeeAdmin(admin.ModelAdmin):
       list_display_links = ('id', 'full_name')
       list_filter = (
             'gender', 'staffPosition', 'academicDegree', 'academicRank', 
-            'employmentForm', 'employeeType', 'is_foreign', 'citizenship',
+            'employmentForm', 'employeeType',
             'created_at', 'updated_at'
       )
       search_fields = (
-            'full_name', 'employee_id_number', 'meta_id', 
-            'uzkadr_id', 'specialty', 'email', 'phone', 'passport'
+            'full_name', 
       )
       readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'ages')
       
