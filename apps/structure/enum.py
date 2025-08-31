@@ -40,7 +40,7 @@ class MenuItemEnum(Enum):
     STUDENTS_TUTION_FEE = "tuition-fee"
     STUDENTS_MANAGAMENT = "management"
     STUDENTS_EXAMS = "state-exams"
-    STUDENTS_EMPLOYEMENT = "employment
+    STUDENTS_EMPLOYEMENT = "employment"
     EDUCATION_DATA = "data"
     EDUCATION_REPORT = "reports"
     EDUCATION_COLLEAGE = "faculty"
