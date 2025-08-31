@@ -42,9 +42,18 @@ class MenuItemEnum(Enum):
 
 
 class DivisionTypeEnum(Enum):
-    CENTER_DEPARTMENT = "center_department"  # Markaz/Bo'lim
-    TECHNICAL_LYCEUM = "technical_lyceum"    # Texnikum/Litsey
-    EDUCATION = "education"                     # Ta'lim
+    CENTER_DEPARTMENT = "centers-and-departments"  # Markaz/Bo'lim
+    TECHNICAL_LYCEUM = "institutions"    # Texnikum/Litsey
+    FORM_OF_EDUCATION = "forms-of-education"                    
+    SCIENTIFIC_ACTIVITY = "scientific-activity"
+    INTERNATION_RELATION = "international-relations"
+    FINANCIAL_ACTIVITY = "financial-activity"
+    INTERNATION_STUDENT = "international"
+    GRADUATES = "graduates"
+    SDG_INFO = "info"
+    SDG_REPORTS = "reports"
+    
+    
     
     @classmethod
     def choices(cls):
