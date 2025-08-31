@@ -39,13 +39,7 @@ class DivisionListByTypeView(APIView):
         operation_description="""
             Berilgan Division turi bo'yicha Division ma'lumotlarini olish.
             ---
-            Division turlari:
-            center_department - Markaz/Bo'lim
-            technical_lyceum - Texnikum/Litsey
-            bachelor - Bakalavriyat
-            master - Magistratura
-            aspiranture - Aspirantura
-            doctoranture - Doktorantura
+            Division turlari filterlarda bor
         """,
         responses={
             200: serializers.DivisionListSerializer(),
