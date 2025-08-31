@@ -67,8 +67,6 @@ class DivisionTypeEnum(Enum):
     FINANCIAL_ACTIVITY = "financial-activity"
     INTERNATION_STUDENT = "international"
     GRADUATES = "graduates"
-    SDG_INFO = "info"
-    SDG_REPORTS = "reports"
     
     
     
