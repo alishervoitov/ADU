@@ -31,10 +31,27 @@ class WeekDaysEnum(Enum):
     
 
 class MenuItemEnum(Enum):
+    STRUCTURE = "structure"
     CHARTER = "charter" # universitet nizomi
     HISTORY = "history" # universitet tarixi
     UNIVERSITY_COUNCIL = "council" # universitet kengashi
-    SCIENTIFIC_COUNCIL = "scientific_council" # ilmiy kengash
+    SCIENTIFIC_COUNCIL = "press-secretary" # ilmiy kengash
+    STUDENTS_GIFTED = "gifted"
+    STUDENTS_TUTION_FEE = "tuition-fee"
+    STUDENTS_MANAGAMENT = "management"
+    STUDENTS_EXAMS = "state-exams"
+    STUDENTS_EMPLOYEMENT = "employment
+    EDUCATION_DATA = "data"
+    EDUCATION_REPORT = "reports"
+    EDUCATION_COLLEAGE = "faculty"
+    SDG_INFO = "info"
+    SDG_REPORTS = "reports"
+    GREEN_UNIVERSITY = "concept"
+    GREEN_ACTIVE_STUDENTS = "active-students"
+    LEGAL_DOCUMENTS = "legal-documents"
+    PRACTICAL_ACTIVITIES = "practical-activities"
+    LEGAL_ACTS = "legal-acts"
+    
     
     @classmethod
     def choices(cls):
