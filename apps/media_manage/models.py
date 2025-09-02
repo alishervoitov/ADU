@@ -17,7 +17,7 @@ class NewType(TimeStamped, Authored):
         verbose_name_plural = "Yangilik Turlari"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.parent.name})" if self.parent else self.name
 
 
 class News(TimeStamped, Authored):
