@@ -57,7 +57,7 @@ THIRD_PARTY_APPS = [
     "drf_yasg",
     "corsheaders",
     "rosetta",
-    "ckeditor",
+    "django_ckeditor_5",
     "ckeditor_uploader",
 ]
 
@@ -246,23 +246,25 @@ customColorPalette = [
     ]
 
 # CKEditor Configuration
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_CONFIGS = {
+# CKEDITOR_UPLOAD_PATH = "uploads/"
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
-    'awesome_ckeditor': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink'],
-            ['RemoveFormat', 'Source']
-        ]
-    },
+        'toolbar': [
+            'heading', '|',
+            'bold', 'italic', 'underline', 'strikethrough', 'code', 'subscript', 'superscript', '|',
+            'link', 'blockQuote', 'codeBlock', '|',
+            'alignment', '|',
+            'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent', '|',
+            'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+            'imageUpload', 'mediaEmbed', 'horizontalLine', 'pageBreak', '|',
+            'undo', 'redo', 'findAndReplace', 'selectAll', 'removeFormat', '|',
+            'specialCharacters', 'sourceEditing', 'highlight', 'fontColor', 'fontBackgroundColor', 
+            'fontSize', 'fontFamily', '|',
+            'exportPdf', 'exportWord', 'print'
+        ],
+        'language': 'uz',
+    }
 }
 
 # Default primary key field type
