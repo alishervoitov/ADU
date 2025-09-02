@@ -2,11 +2,21 @@ from rest_framework import serializers
 from apps.media_manage.models import News, NewType, DocumentType, Documents
 
 
-class NewTypeSerializer(serializers.ModelSerializer):
+class NewTypeChildrenSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewType
-        fields = ('id', 'name', 'parent', 'description')
+        fields = ('id', 'name', 'parent')
 
+class NewTypeSerializer(serializers.ModelSerializer):
+    children=serializers.SerializerMethodField()
+    class Meta:
+        model = NewType
+        fields = ('id', 'name', 'children')
+    
+    def get_children(self, obj):
+        if obj.subtypes.exists():
+            return NewTypeChildrenSerializer(obj.subtypes.all(), many=True).data
+        return None
 
 class NewsSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
