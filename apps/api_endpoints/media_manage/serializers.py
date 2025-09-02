@@ -5,7 +5,7 @@ from apps.media_manage.models import News, NewType, DocumentType, Documents
 class NewTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewType
-        fields = ('id', 'name', 'description')
+        fields = ('id', 'name', 'parent', 'description')
 
 
 class NewsSerializer(serializers.ModelSerializer):

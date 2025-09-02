@@ -3,11 +3,11 @@ from .models import NewType, News , DocumentType, Documents
 
 
 class NewTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'created_at_str', 'updated_at_str')
+    list_display = ('name', 'parent', 'description', 'created_at_str', 'updated_at_str')
     search_fields = ('name',)
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('name', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
+                  'fields': ('name', 'parent', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
             }),
       )
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
