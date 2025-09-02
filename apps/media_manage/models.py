@@ -6,6 +6,10 @@ from django.utils.text import slugify
 
 class NewType(TimeStamped, Authored):
     name = models.CharField(max_length=100, verbose_name="Type Name")
+    parent = models.ForeignKey(
+        'self', on_delete=models.SET_NULL, related_name='subtypes', verbose_name="Parent Type",
+        null=True, blank=True
+    )
     description = models.TextField(blank=True, null=True, verbose_name="Description")
 
     class Meta:

@@ -13,6 +13,9 @@ from drf_yasg import openapi
 
 class NewTypeListView(APIView):
     permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['name']
+    filterset_fields = ['parent']
 
     def get(self, request, *args, **kwargs):
         newstype = NewType.objects.all()
