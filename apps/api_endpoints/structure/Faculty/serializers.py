@@ -11,6 +11,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'code',
+            'slug',
             'description',
         )
 
@@ -45,6 +46,7 @@ class FacultyListSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'code',
+            'slug',
             'description',
             'banner',
             'icon',
@@ -71,6 +73,7 @@ class FacultyDetailSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'code',
+            'slug',
             'description',
             'banner',
             'icon',

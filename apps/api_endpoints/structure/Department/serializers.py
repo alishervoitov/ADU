@@ -22,6 +22,7 @@ class DepartmentDetailSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'code',
+            'slug',
             'description',
             'decan',
             'employees',
