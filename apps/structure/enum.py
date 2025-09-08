@@ -51,8 +51,10 @@ class MenuItemEnum(Enum):
     LEGAL_DOCUMENTS = "legal-documents"
     PRACTICAL_ACTIVITIES = "practical-activities"
     LEGAL_ACTS = "legal-acts"
-    
-    
+    ADMISSION_GUIDE = "guide"
+    ADMISSION_INTERNATIONAL = "international"
+    ADMISSION_DISTANCE = "distance" 
+
     @classmethod
     def choices(cls):
         return [(item.value, item.name) for item in cls]
@@ -67,6 +69,10 @@ class DivisionTypeEnum(Enum):
     FINANCIAL_ACTIVITY = "financial-activity"
     INTERNATION_STUDENT = "international"
     GRADUATES = "graduates"
+    ADMISSION_BACHELOR = "bachelor"
+    ADMISSION_MASTER = "master"
+    ADMISSION_DOCTORATE = "doctoral"
+    ADMISSION_REGULATION = "regulations"
     
     
     
