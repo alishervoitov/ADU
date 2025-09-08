@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
+    "ckeditor",
     "rosetta",
     "django_ckeditor_5",
     "ckeditor_uploader",
