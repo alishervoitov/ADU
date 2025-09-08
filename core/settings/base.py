@@ -247,8 +247,8 @@ customColorPalette = [
     ]
 
 # CKEditor Configuration
-# CKEDITOR_UPLOAD_PATH = "uploads/"
-# CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': [
