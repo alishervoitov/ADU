@@ -38,6 +38,12 @@ class DepartmentDetailView(RetrieveAPIView):
                             max_length=20,
                             x_nullable=True
                         ),
+                        'slug': openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description='Slug',
+                            max_length=255,
+                            read_only=True
+                        ),
                         'description': openapi.Schema(
                             type=openapi.TYPE_STRING,
                             description='Tavsif',
