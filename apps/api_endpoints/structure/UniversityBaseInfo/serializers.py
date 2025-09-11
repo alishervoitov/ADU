@@ -32,12 +32,7 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
             'email',
             'admission_dates',
             'admission_time',
-            'specialty',
-            'academicDegree',
-            'academicRank',
-            'employmentForm',
             'staffPosition',
             'photo',
-            'birthday',
-            'tasks'
+            'task'
         )
