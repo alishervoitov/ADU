@@ -22,8 +22,7 @@ class EmployeeAdmin(admin.ModelAdmin):
       search_fields = (
             'full_name', 
       )
-      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by', 'ages')
-      
+
       def get_admission_days_short(self, obj):
           """Admin list da qisqacha qabul kunlarini ko'rsatish"""
           days = obj.get_admission_days_display()
@@ -31,32 +30,7 @@ class EmployeeAdmin(admin.ModelAdmin):
           days_str = [str(day) for day in days]
           return ', '.join(days_str[:3]) + '...' if len(days_str) > 3 else ', '.join(days_str)
       get_admission_days_short.short_description = 'Qabul kunlari'
-      
-      fieldsets = (
-            ('Asosiy ma\'lumotlar', {
-                  'fields': (
-                  'full_name', 'employee_id_number', 
-                  'photo', 'image', 'gender', 'year_of_enter'
-                  )
-            }),
-            ('Shaxsiy ma\'lumotlar', {
-                  'fields': (
-                  'birthday', 'age', 'email', 'phone', 'passport', 
-                  'address', 'citizenship'
-                  )
-            }),
-            ('Kasbiy ma\'lumotlar', {
-                  'fields': (
-                  'specialty', 'academicDegree', 'academicRank', 
-                  'employmentForm', 'staffPosition', 'employeeType', 'is_foreign',
-                  'admission_days_choices', 'admission_time'
-                  )
-            }),
-            ('Tizim ma\'lumotlari', {
-                  'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),
-                  'classes': ('collapse',)
-            })
-      )
+
       
       def get_queryset(self, request):
             qs = super().get_queryset(request)
