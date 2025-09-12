@@ -9,6 +9,8 @@ class UniversityBaseInfoSerializer(serializers.ModelSerializer):
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    photo = serializers.SerializerMethodField()
+    
     class Meta:
         model = Employee
         fields = (
@@ -21,6 +23,14 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'photo',
             'task'
         )
+    
+    def get_photo(self, obj):
+        if obj.photo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.photo.url)
+            return obj.photo.url
+        return None
 
 
 class EmployeeDetailSerializer(serializers.ModelSerializer):

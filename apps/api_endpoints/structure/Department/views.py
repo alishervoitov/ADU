@@ -1,7 +1,6 @@
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny
 
-from apps.api_endpoints.structure.UniversityBaseInfo.serializers import EmployeeSerializer
 from apps.structure.models import Department
 from . import serializers
 from drf_yasg.utils import swagger_auto_schema

@@ -37,7 +37,7 @@ class EmployeeListView(APIView):
         if not staffPosition:
             return Response({"error": "staffPosition parameter is required"}, status=400)
         employees = Employee.objects.filter(staffPosition=staffPosition)
-        serializer = serializers.EmployeeSerializer(employees, many=True)
+        serializer = serializers.EmployeeSerializer(employees, many=True, context={"request": request})
         return Response(serializer.data)
 
 
