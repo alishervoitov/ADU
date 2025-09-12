@@ -18,7 +18,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'email',
             'admission_dates',
             'admission_time',
-            
+            'photo',
+            'task'
         )
 
 
