@@ -16,7 +16,7 @@ class NewTypeSerializer(serializers.ModelSerializer):
     def get_children(self, obj):
         if obj.subtypes.exists():
             return NewTypeChildrenSerializer(obj.subtypes.all(), many=True).data
-        return None
+        return []
 
 class NewsSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
