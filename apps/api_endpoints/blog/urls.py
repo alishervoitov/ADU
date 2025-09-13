@@ -3,9 +3,9 @@ from django.urls import path
 
 from . import (
     InteractiveServiceListView,
-    FAQListView
+    FAQListView,
+    ContactCreateView
 )
-from .contact.views import ContactCreateView
 
 app_name = "blog"
 
