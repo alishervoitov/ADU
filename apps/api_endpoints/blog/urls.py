@@ -5,10 +5,12 @@ from . import (
     InteractiveServiceListView,
     FAQListView
 )
+from .contact.views import ContactCreateView
 
 app_name = "blog"
 
 urlpatterns = [
     path("interactive-services/", InteractiveServiceListView.as_view(), name="interactive_service_list"),
     path("faqs/", FAQListView.as_view(), name="faq_list"),
+    path("contact/", ContactCreateView.as_view(), name="contact_create"),
 ]
