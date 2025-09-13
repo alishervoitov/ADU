@@ -36,6 +36,7 @@ class News(TimeStamped, Authored):
     title = models.CharField(max_length=255, verbose_name="News Title")
     slug = models.SlugField(max_length=255, verbose_name="Slug", null=True, blank=True, unique=True)
     image = models.ImageField(upload_to='news/images/', verbose_name="Asosiy rasm")
+    video_url = models.URLField(max_length=255, verbose_name="Video URL", null=True, blank=True)
     content = RichTextField(verbose_name="Content")
     type = models.ForeignKey(
         NewType, on_delete=models.SET_NULL, related_name='news', verbose_name="Type",

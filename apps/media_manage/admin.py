@@ -14,13 +14,13 @@ class NewTypeAdmin(admin.ModelAdmin):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'type', 'created_at_str', 'updated_at_str')
+    list_display = ('title', 'slug', 'video_url', 'type', 'created_at_str', 'updated_at_str')
     search_fields = ('title',)
     list_filter = ('type',)
 
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('title', 'slug', 'type', 'image', 'viewed_count')
+                  'fields': ('title', 'slug', 'type', 'image', 'video_url', 'viewed_count')
             }),
             ('Kontent', {
                   'fields': ('content',)
