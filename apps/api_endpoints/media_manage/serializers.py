@@ -9,6 +9,7 @@ class NewTypeChildrenSerializer(serializers.ModelSerializer):
 
 class NewTypeSerializer(serializers.ModelSerializer):
     children=serializers.SerializerMethodField()
+    slug = serializers.SerializerMethodField()
     class Meta:
         model = NewType
         fields = ('id', 'name', 'slug', 'children')
@@ -17,6 +18,12 @@ class NewTypeSerializer(serializers.ModelSerializer):
         if obj.subtypes.exists():
             return NewTypeChildrenSerializer(obj.subtypes.all(), many=True).data
         return []
+    
+    def get_slug(self, obj):
+        if not obj.subtypes.exists():
+            return obj.slug
+        return "#"
+            
 
 class NewsSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
