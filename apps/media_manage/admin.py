@@ -3,24 +3,24 @@ from .models import NewType, News , DocumentType, Documents
 
 
 class NewTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent', 'description', 'created_at_str', 'updated_at_str')
+    list_display = ('name', 'slug', 'parent', 'description', 'created_at_str', 'updated_at_str')
     search_fields = ('name',)
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('name', 'parent', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
+                  'fields': ('name', 'slug', 'parent', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by')
             }),
       )
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type', 'created_at_str', 'updated_at_str')
+    list_display = ('title', 'slug', 'type', 'created_at_str', 'updated_at_str')
     search_fields = ('title',)
     list_filter = ('type',)
 
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('title', 'type', 'image', 'viewed_count')
+                  'fields': ('title', 'slug', 'type', 'image', 'viewed_count')
             }),
             ('Kontent', {
                   'fields': ('content',)
@@ -34,11 +34,11 @@ class NewsAdmin(admin.ModelAdmin):
 
 
 class DocumentTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at_str', 'updated_at_str')
+    list_display = ('name', 'slug', 'created_at_str', 'updated_at_str')
     search_fields = ('name',)
     fieldsets = (
                   ('Asosiy ma\'lumotlar', {
-                    'fields': ('name', 'created_at', 'updated_at', 'created_by', 'updated_by')
+                    'fields': ('name', 'slug', 'created_at', 'updated_at', 'created_by', 'updated_by')
                   }),
       )
 
@@ -48,13 +48,13 @@ class DocumentTypeAdmin(admin.ModelAdmin):
 
 
 class DocumentsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type', 'url', 'created_at_str', 'updated_at_str')
+    list_display = ('title', 'slug', 'type', 'url', 'created_at_str', 'updated_at_str')
     search_fields = ('title',)
     list_filter = ('type',)
 
     fieldsets = (
             ('Asosiy ma\'lumotlar', {
-                  'fields': ('title','type', 'slug', 'url', 'file')
+                  'fields': ('title', 'type', 'slug', 'url', 'file')
             }),
             ('Tizim ma\'lumotlari', {
                   'fields': ('created_at', 'updated_at', 'created_by', 'updated_by'),

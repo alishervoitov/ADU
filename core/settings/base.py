@@ -141,18 +141,25 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": env.str("DB_ENGINE", default="django.db.backends.postgresql"),
-        "NAME": env.str("DB_NAME", default="adu"),
-        "USER": env.str("DB_USER", default="adu"),
-        "PASSWORD": env.get_value("DB_PASSWORD", default="adu"),
-        "HOST": env.str("DB_HOST", default="localhost"),
-        "PORT": env.str("DB_PORT", default="5432"),
-        "ATOMIC_REQUESTS": True,
+if env("SQLITE", default=False) in [True, 'True', 'true', '1', 1]:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": env.str("DB_ENGINE", default="django.db.backends.postgresql"),
+            "NAME": env.str("DB_NAME", default="adu"),
+            "USER": env.str("DB_USER", default="adu"),
+            "PASSWORD": env.get_value("DB_PASSWORD", default="adu"),
+            "HOST": env.str("DB_HOST", default="localhost"),
+            "PORT": env.str("DB_PORT", default="5432"),
+            "ATOMIC_REQUESTS": True,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
