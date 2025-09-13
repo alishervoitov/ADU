@@ -18,7 +18,7 @@ class NewTypeListView(APIView):
     filterset_fields = ['parent']
 
     def get(self, request, *args, **kwargs):
-        newstype = NewType.objects.filter(parent__isnull=True)
+        newstype = NewType.objects.filter(parent__isnull=True).order_by('id')
         serializer = serializers.NewTypeSerializer(newstype, many=True)
         return Response(serializer.data)
 
