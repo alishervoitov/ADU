@@ -53,7 +53,8 @@ class MenuItemEnum(Enum):
     LEGAL_ACTS = "legal-acts"
     ADMISSION_GUIDE = "guide"
     ADMISSION_INTERNATIONAL = "international"
-    ADMISSION_DISTANCE = "distance" 
+    ADMISSION_DISTANCE = "distance"
+    ADMISSION_DORMITORIES = "dormitories"
 
     @classmethod
     def choices(cls):
