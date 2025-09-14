@@ -32,7 +32,7 @@ class NewsShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'slug', 'image', 'type', 'viewed_count', 'created_at_str', 'updated_at_str')
+        fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'viewed_count', 'created_at_str', 'updated_at_str')
 
 
 class DocumentTypeSerializer(serializers.ModelSerializer):
