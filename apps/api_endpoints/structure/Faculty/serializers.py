@@ -12,6 +12,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'name',
             'code',
             'slug',
+            'employeeRank',
             'description',
         )
 
@@ -25,7 +26,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'id', 'full_name', 'employeeType', 
             'staffPosition', 'academicRank', 'academicDegree',
             'specialty', 'photo', 'email', 'phone', 'admission_dates', 
-            'admission_days_display', 'admission_time'
+            'admission_days_display', 'admission_time', 'employeeRank'
         )
     
     def get_admission_dates(self, obj):

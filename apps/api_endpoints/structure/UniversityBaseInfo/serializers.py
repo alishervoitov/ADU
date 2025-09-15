@@ -21,7 +21,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'admission_dates',
             'admission_time',
             'photo',
-            'task'
+            'task',
+            'employeeRank'
         )
     
     def get_photo(self, obj):
@@ -45,5 +46,6 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
             'admission_time',
             'staffPosition',
             'photo',
-            'task'
+            'task',
+            'employeeRank'
         )

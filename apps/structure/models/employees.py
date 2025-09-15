@@ -164,6 +164,7 @@ class Employee(UserInfo):
         blank=True,
         help_text=_("Qabul kunlarini vergul bilan ajrating. Masalan: monday,tuesday,friday")
     )
+    employeeRank = models.CharField(_("Xodim darajasi"), max_length=255, null=True, blank=True)
     admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
     task = RichTextField(verbose_name=_("Vazifalari"), null=True, blank=True)
     
