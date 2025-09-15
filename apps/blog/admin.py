@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import (
      InteractiveService,
-     FAQ
+     FAQ,
+     Contact
 )
 
 @admin.register(InteractiveService)
@@ -22,4 +23,12 @@ class FAQAdmin(admin.ModelAdmin):
      ordering = ('order', 'created_at')
      
      readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-     
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'phone', 'message', 'created_at', 'updated_at')
+    search_fields = ('full_name', 'phone', 'message')
+    ordering = ('-created_at',)
+    
+    readonly_fields = ('full_name', 'phone', 'message', 'created_at', 'updated_at', 'created_by', 'updated_by')
