@@ -28,7 +28,7 @@ class DivisionDocumentTranslationOptions(TranslationOptions):
 
 @register(Employee)
 class EmployeeTranslationOptions(TranslationOptions):
-    fields = ('task',)
+    fields = ('task', 'employeeRank')
 
 
 @register(HomePageText)
