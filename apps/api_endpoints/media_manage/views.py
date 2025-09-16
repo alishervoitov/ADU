@@ -54,6 +54,21 @@ class NewsListView(ListAPIView):
         return super().get(request, *args, **kwargs)
 
 
+class NewsListLatestView(ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = News.objects.all().order_by('-id')[:6]
+    pagination_class = None
+    serializer_class = serializers.NewsShortSerializer
+
+    @swagger_auto_schema(
+        responses={200: serializers.NewsShortSerializer(many=True)},
+        operation_summary="List latest 6 News",
+        operation_description="Get a list of the latest 6 News objects ordered by creation date"
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
 class NewsRetrieveView(APIView):
     permission_classes = [AllowAny]
 
