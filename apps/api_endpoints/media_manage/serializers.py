@@ -21,18 +21,20 @@ class NewTypeSerializer(serializers.ModelSerializer):
 
 class NewsSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
+    type_slug = serializers.CharField(source='type.slug', allow_null=True)
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'content', 'viewed_count', 'created_at_str', 'updated_at_str')
+        fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'type_slug', 'content', 'viewed_count', 'created_at_str', 'updated_at_str')
 
 
 class NewsShortSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
+    type_slug = serializers.CharField(source='type.slug', allow_null=True)
 
     class Meta:
         model = News
-        fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'viewed_count', 'created_at_str', 'updated_at_str')
+        fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'type_slug', 'viewed_count', 'created_at_str', 'updated_at_str')
 
 
 class DocumentTypeSerializer(serializers.ModelSerializer):
