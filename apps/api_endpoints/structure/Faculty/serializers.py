@@ -16,7 +16,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
         )
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    admission_dates = serializers.SerializerMethodField()
     
     class Meta:
         model = Employee
