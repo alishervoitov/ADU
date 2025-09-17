@@ -16,6 +16,15 @@ class DepartmentSerializer(serializers.ModelSerializer):
         )
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    photo = serializers.SerializerMethodField()
+    
+    def get_photo(self, obj):
+        if obj.photo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.photo.url)
+            return obj.photo.url
+        return None
     
     class Meta:
         model = Employee
@@ -48,10 +57,14 @@ class FacultyDetailSerializer(serializers.ModelSerializer):
     departments = serializers.SerializerMethodField()
     
     def get_decan(self, obj):
-        return EmployeeSerializer(obj.employees.filter(staffPosition=Employee.DEKAN).first().employee).data
+        decan_employee = obj.employees.filter(staffPosition=Employee.DEKAN).first()
+        if decan_employee:
+            return EmployeeSerializer(decan_employee.employee, context=self.context).data
+        return None
 
     def get_employees(self, obj):
-        return [EmployeeSerializer(emp.employee).data for emp in obj.employees.filter(~Q(staffPosition=Employee.DEKAN))]
+        employees = obj.employees.filter(~Q(staffPosition=Employee.DEKAN))
+        return [EmployeeSerializer(emp.employee, context=self.context).data for emp in employees]
 
     def get_departments(self, obj):
         return DepartmentSerializer(obj.departments.all(), many=True).data
