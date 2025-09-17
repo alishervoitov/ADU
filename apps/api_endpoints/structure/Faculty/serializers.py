@@ -12,7 +12,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'name',
             'code',
             'slug',
-            'employeeRank',
             'description',
         )
 

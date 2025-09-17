@@ -7,7 +7,10 @@ from apps.structure.models import (
     DivisionDocument, 
     Employee,
     HomePageText,
-    UniversityBaseInfo
+    UniversityBaseInfo,
+    Department,
+    Faculty,
+    Specialty
 
 )
 @register(Divisions)
@@ -38,3 +41,15 @@ class HomePageTextTranslationOptions(TranslationOptions):
 @register(UniversityBaseInfo)
 class UniversityBaseInfoTranslationOptions(TranslationOptions):
     fields = ('about', 'address',)
+
+@register(Department)
+class DepartmentTranslationOptions(TranslationOptions):
+    fields = ('name', 'description',)
+    
+@register(Faculty)
+class FacultyTranslationOptions(TranslationOptions):
+    fields = ('name', 'description',)
+
+@register(Specialty)
+class SpecialtyTranslationOptions(TranslationOptions):
+    fields = ('name', 'description',)
