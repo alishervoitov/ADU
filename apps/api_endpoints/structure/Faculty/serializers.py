@@ -25,18 +25,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'id', 'full_name', 'employeeType', 
             'staffPosition', 'academicRank', 'academicDegree',
             'specialty', 'photo', 'email', 'phone', 'admission_dates', 
-            'admission_days_display', 'admission_time', 'employeeRank'
+            'admission_time', 'employeeRank'
         )
-    
-    def get_admission_dates(self, obj):
-        """Qabul kunlarini list sifatida qaytaradi"""
-        return obj.get_admission_days_list()
-    
-    def get_admission_days_display(self, obj):
-        """Qabul kunlarini o'zbek tilida qaytaradi"""
-        days = obj.get_admission_days_display()
-        # Translation obyektlarini string ga o'girish
-        return [str(day) for day in days]
+
 
 
 class FacultyListSerializer(serializers.ModelSerializer):

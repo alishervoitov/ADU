@@ -158,38 +158,17 @@ class Employee(UserInfo):
     employeeType = models.CharField(
         _("Xodim turi"), max_length=255, choices=EMPLOYEE_TYPE, default="teacher")
     is_foreign = models.BooleanField(_("Chet el fuqarosi"), default=False)
+    employeeRank = models.CharField(_("Xodim darajasi"), max_length=255, null=True, blank=True)
     admission_dates = models.CharField(
         _("Qabul kunlari"), 
         max_length=255, 
         blank=True,
         help_text=_("Qabul kunlarini vergul bilan ajrating. Masalan: monday,tuesday,friday")
     )
-    employeeRank = models.CharField(_("Xodim darajasi"), max_length=255, null=True, blank=True)
-    admission_time = models.TimeField(_("Qabul vaqti"), null=True, blank=True)
-    task = RichTextField(verbose_name=_("Vazifalari"), null=True, blank=True)
-    
-    def get_admission_days_list(self):
-        """Qabul kunlarini list sifatida qaytaradi"""
-        if self.admission_dates:
-            return [day.strip() for day in self.admission_dates.split(',') if day.strip()]
-        return []
-    
-    def set_admission_days_list(self, days_list):
-        """List ko'rinishidagi kunlarni string sifatida saqlaydi"""
-        if days_list:
-            # Faqat valid kunlarni saqlash
-            valid_days = [day for day in days_list if day in [choice[0] for choice in WeekDaysEnum.choices()]]
-            self.admission_dates = ','.join(valid_days)
-        else:
-            self.admission_dates = ''
-    
-    def get_admission_days_display(self):
-        """Qabul kunlarini o'zbek tilida ko'rsatish uchun"""
-        days_list = self.get_admission_days_list()
-        choices_dict = dict(WeekDaysEnum.choices())
-        # Translation obyektlarini string ga o'girish
-        return [str(choices_dict.get(day, day)) for day in days_list]
-    
+    admission_time = models.CharField(
+        _("Qabul qilingan vaqt"), max_length=50, null=True, blank=True, help_text=_("Masalan: 09:00 - 11:00")
+    )
+    task = RichTextField(verbose_name=_("Vazifalari"), null=True, blank=True)    
     
     def __str__(self):
         return f"{self.full_name} - {self.staffPosition}"

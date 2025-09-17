@@ -31,7 +31,7 @@ class DivisionDocumentTranslationOptions(TranslationOptions):
 
 @register(Employee)
 class EmployeeTranslationOptions(TranslationOptions):
-    fields = ('task', 'employeeRank',)
+    fields = ('task', 'employeeRank', 'admission_dates',)
 
 
 @register(HomePageText)
@@ -45,7 +45,7 @@ class UniversityBaseInfoTranslationOptions(TranslationOptions):
 @register(Department)
 class DepartmentTranslationOptions(TranslationOptions):
     fields = ('name', 'description',)
-    
+
 @register(Faculty)
 class FacultyTranslationOptions(TranslationOptions):
     fields = ('name', 'description',)
