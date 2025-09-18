@@ -11,6 +11,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'api.1vs1.uz', 
+    '1vs1.uz',
     '185.133.251.101', 
 ]
 
@@ -46,12 +47,13 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
+    'https://1vs1.uz',
 ]
 
 # Security headers
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# X_FRAME_OPTIONS = 'DENY'
 
 ###################################################################
 # CORS
