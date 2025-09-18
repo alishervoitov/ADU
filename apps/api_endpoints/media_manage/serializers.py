@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.media_manage.models import News, NewType, DocumentType, Documents
+from django.conf import settings
 
 
 class NewTypeChildrenSerializer(serializers.ModelSerializer):
@@ -29,8 +30,8 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'type_slug', 'content', 'viewed_count', 'created_at_str', 'updated_at_str')
     
     def get_image(self, obj):
-        request = self.context.get("request")
         if obj.image:
+            request = self.context.get('request')
             if request:
                 return request.build_absolute_uri(obj.image.url)
             return obj.image.url

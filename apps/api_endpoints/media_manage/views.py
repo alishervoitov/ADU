@@ -106,7 +106,7 @@ class NewsRetrieveView(APIView):
     def get(self, request, pk, *args, **kwargs):
         try:
             news = News.objects.get(pk=pk)
-            serializer = serializers.NewsSerializer(news)
+            serializer = serializers.NewsSerializer(news, context={'request': request})
             news.viewed_count += 1
             news.save()
             return Response(serializer.data)
