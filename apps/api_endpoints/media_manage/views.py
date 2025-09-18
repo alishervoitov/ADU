@@ -56,11 +56,15 @@ class NewsListView(ListAPIView):
 
 class RelatedNewsListView(ListAPIView):
     permission_classes = [AllowAny]
-    queryset = News.objects.all().order_by('-id')[:4]
     pagination_class = None
     serializer_class = serializers.NewsShortSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['type']
+
+    def get_queryset(self):
+        qs = News.objects.all().order_by('-id')
+        return qs[:4]
+    
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
