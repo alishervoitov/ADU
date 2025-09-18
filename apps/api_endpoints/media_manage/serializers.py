@@ -22,10 +22,19 @@ class NewTypeSerializer(serializers.ModelSerializer):
 class NewsSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source='type.name', allow_null=True)
     type_slug = serializers.CharField(source='type.slug', allow_null=True)
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = News
         fields = ('id', 'title', 'slug', 'image', 'video_url', 'type', 'type_slug', 'content', 'viewed_count', 'created_at_str', 'updated_at_str')
+    
+    def get_image(self, obj):
+        request = self.context.get("request")
+        if obj.image:
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
 
 
 class NewsShortSerializer(serializers.ModelSerializer):
