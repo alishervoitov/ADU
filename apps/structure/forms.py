@@ -12,11 +12,6 @@ class MultipleChoiceField(forms.MultipleChoiceField):
 
 
 class EmployeeAdminForm(forms.ModelForm):
-    admission_days_choices = MultipleChoiceField(
-        label=_("Qabul kunlari"),
-        required=False,
-        help_text=_("Xodim qabul qiladigan kunlarni tanlang")
-    )
     
     class Meta:
         model = Employee
@@ -24,15 +19,10 @@ class EmployeeAdminForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.pk:
-            # Mavjud ma'lumotlarni yuklash
-            self.fields['admission_days_choices'].initial = self.instance.get_admission_days_list()
     
     def save(self, commit=True):
         instance = super().save(commit=False)
-        # Tanlangan kunlarni saqlash
-        selected_days = self.cleaned_data.get('admission_days_choices', [])
-        instance.set_admission_days_list(selected_days)
+
         if commit:
             instance.save()
         return instance

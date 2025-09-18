@@ -3,15 +3,14 @@ from .models.employees import Employee
 from .models.university import Faculty, Department, Specialty, FacultyEmployee, DepartmentEmployee, Divisions, DivisionDocument
 from .models.main_info import HomePageText, UniversityBaseInfo
 from .models.documents import Document, MenuItem
-from .forms import EmployeeAdminForm
+
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-      form = EmployeeAdminForm
       list_display = (
             'id', 'full_name', 'employee_id_number', 'staffPosition', 
             'academicDegree', 'academicRank', 'employmentForm', 'is_foreign',
-            'get_admission_days_short', 'created_at', 'updated_at'
+            'created_at', 'updated_at'
       )
       list_display_links = ('id', 'full_name')
       list_filter = (
@@ -22,14 +21,6 @@ class EmployeeAdmin(admin.ModelAdmin):
       search_fields = (
             'full_name', 
       )
-
-      def get_admission_days_short(self, obj):
-          """Admin list da qisqacha qabul kunlarini ko'rsatish"""
-          days = obj.get_admission_days_display()
-          # Translation obyektlarini string ga o'girish
-          days_str = [str(day) for day in days]
-          return ', '.join(days_str[:3]) + '...' if len(days_str) > 3 else ', '.join(days_str)
-      get_admission_days_short.short_description = 'Qabul kunlari'
 
       
       def get_queryset(self, request):

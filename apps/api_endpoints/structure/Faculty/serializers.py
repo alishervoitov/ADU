@@ -12,13 +12,19 @@ class DepartmentSerializer(serializers.ModelSerializer):
             'name',
             'code',
             'slug',
-            'employeeRank',
             'description',
         )
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    admission_dates = serializers.SerializerMethodField()
-    admission_days_display = serializers.SerializerMethodField()
+    photo = serializers.SerializerMethodField()
+    
+    def get_photo(self, obj):
+        if obj.photo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.photo.url)
+            return obj.photo.url
+        return None
     
     class Meta:
         model = Employee
@@ -26,18 +32,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
             'id', 'full_name', 'employeeType', 
             'staffPosition', 'academicRank', 'academicDegree',
             'specialty', 'photo', 'email', 'phone', 'admission_dates', 
-            'admission_days_display', 'admission_time', 'employeeRank'
+            'admission_time', 'employeeRank'
         )
-    
-    def get_admission_dates(self, obj):
-        """Qabul kunlarini list sifatida qaytaradi"""
-        return obj.get_admission_days_list()
-    
-    def get_admission_days_display(self, obj):
-        """Qabul kunlarini o'zbek tilida qaytaradi"""
-        days = obj.get_admission_days_display()
-        # Translation obyektlarini string ga o'girish
-        return [str(day) for day in days]
+
 
 
 class FacultyListSerializer(serializers.ModelSerializer):
@@ -60,10 +57,14 @@ class FacultyDetailSerializer(serializers.ModelSerializer):
     departments = serializers.SerializerMethodField()
     
     def get_decan(self, obj):
-        return EmployeeSerializer(obj.employees.filter(staffPosition=Employee.DEKAN).first().employee).data
+        decan_employee = obj.employees.filter(staffPosition=Employee.DEKAN).first()
+        if decan_employee:
+            return EmployeeSerializer(decan_employee.employee, context=self.context).data
+        return None
 
     def get_employees(self, obj):
-        return [EmployeeSerializer(emp.employee).data for emp in obj.employees.filter(~Q(staffPosition=Employee.DEKAN))]
+        employees = obj.employees.filter(~Q(staffPosition=Employee.DEKAN))
+        return [EmployeeSerializer(emp.employee, context=self.context).data for emp in employees]
 
     def get_departments(self, obj):
         return DepartmentSerializer(obj.departments.all(), many=True).data
