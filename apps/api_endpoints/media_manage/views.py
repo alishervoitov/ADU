@@ -58,10 +58,12 @@ class RelatedNewsListView(ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = None
     serializer_class = serializers.NewsShortSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['type']
 
     def get_queryset(self):
+        type_id = self.request.query_params.get('type', None)
+        if type_id is not None:
+            qs = News.objects.filter(type__id=type_id).order_by('-id')
+            return qs[:4]
         qs = News.objects.all().order_by('-id')
         return qs[:4]
     
