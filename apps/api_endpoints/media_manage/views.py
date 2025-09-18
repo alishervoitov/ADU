@@ -54,6 +54,31 @@ class NewsListView(ListAPIView):
         return super().get(request, *args, **kwargs)
 
 
+class RelatedNewsListView(ListAPIView):
+    permission_classes = [AllowAny]
+    queryset = News.objects.all().order_by('-id')[:4]
+    pagination_class = None
+    serializer_class = serializers.NewsShortSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['type']
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                'type',
+                openapi.IN_QUERY,
+                description='Filter by type of News. Available types is numbers of NewType IDs',
+                type=openapi.TYPE_STRING,
+                required=False
+            )
+        ],
+        responses={200: serializers.NewsShortSerializer(many=True)},
+        operation_summary="List 4 Related News",
+        operation_description="Get a list of 4 Related News objects ordered by creation date"
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
 class NewsListLatestView(ListAPIView):
     permission_classes = [AllowAny]
     queryset = News.objects.all().order_by('-id')[:6]
