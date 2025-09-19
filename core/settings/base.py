@@ -58,7 +58,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "ckeditor",
     "rosetta",
-    "django_ckeditor_5",
+    # "django_ckeditor_5",
     "ckeditor_uploader",
 ]
 
