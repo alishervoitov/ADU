@@ -74,7 +74,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Logging
 ###################################################################
 LOG_LEVEL = 'ERROR'
-logs_path = '/var/www/adu/logs'
+logs_path = 'logs'
 
 LOGGING = {
     'version': 1,
