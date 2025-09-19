@@ -15,6 +15,8 @@ ALLOWED_HOSTS = [
     '185.133.251.101', 
     # google 
     '.google.com',
+    'www.mamatmusayev.uz',
+    'mamatmusayev.uz'
 ]
 
 ###################################################################
@@ -50,8 +52,9 @@ CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
     'https://1vs1.uz',
-    # googgle.com 
+    # google.com
     'https://*.google.com',
+    'https://mamatmusayev.uz'
 ]
 
 # Security headers
