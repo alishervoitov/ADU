@@ -32,7 +32,7 @@ class SearchServiceListView(APIView):
         if not query:
             return Response({"results": []})
         
-        data = News.objects.filter(is_active=True, title__icontains=query)
+        data = News.objects.filter(title__icontains=query)
         search_data = []
 
         for item in data:
