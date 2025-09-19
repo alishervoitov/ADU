@@ -39,7 +39,7 @@ class SearchServiceListView(APIView):
             search_data.append({
                 "id": item.id,
                 "name": item.title,
-                "link": f"/news/{item.type.slug}/{item.slug}/"
+                "link": f"/news/{item.type.slug}/{item.slug}"
             })
 
         return Response({"results": search_data})
