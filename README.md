@@ -9,7 +9,7 @@
 ```bash
 python3 -m venv env 
 source env/bin/activate
-pip install -r requirements/develop.text
+pip install -r requirements/production.text
 ```
 
 ### create .env file
@@ -22,12 +22,12 @@ cp .env.example .env
 
 ```bash
 sudo -u postgres psql
-CREATE DATABASE django_boilerplate;
-CREATE USER django_boilerplate WITH PASSWORD 'django_boilerplate';
-ALTER ROLE django_boilerplate SET client_encoding TO 'utf8';
-ALTER ROLE django_boilerplate SET default_transaction_isolation TO 'read committed';
-ALTER ROLE django_boilerplate SET timezone TO 'UTC';
-GRANT ALL PRIVILEGES ON DATABASE django_boilerplate TO django_boilerplate;
+CREATE DATABASE adu_db;
+CREATE USER adu_user WITH PASSWORD 'aduPass!123';
+ALTER ROLE adu_user SET client_encoding TO 'utf8';
+ALTER ROLE adu_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE adu_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE adu_db TO adu_user;
 \q
 ```
 

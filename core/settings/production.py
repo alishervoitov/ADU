@@ -13,6 +13,8 @@ ALLOWED_HOSTS = [
     'api.1vs1.uz', 
     '1vs1.uz',
     '185.133.251.101', 
+    # google 
+    '.google.com',
 ]
 
 ###################################################################
@@ -48,6 +50,8 @@ CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
     'https://1vs1.uz',
+    # googgle.com 
+    'https://*.google.com',
 ]
 
 # Security headers
