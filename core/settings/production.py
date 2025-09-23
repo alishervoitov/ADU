@@ -26,11 +26,11 @@ ALLOWED_HOSTS = [
 
 # Static files collect qilish uchun
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/adu/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/adu/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 ###################################################################
 # Database (Production)
