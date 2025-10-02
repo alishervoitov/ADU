@@ -8,7 +8,6 @@ class InteractiveServiceListSerializer(serializers.ModelSerializer):
         fields = (
             'name',
             'link',
-            'description',
             'icon',
             'icon_dark',
             'order'
