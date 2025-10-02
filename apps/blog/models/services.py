@@ -17,7 +17,7 @@ class InteractiveService(TimeStamped, Authored):
            blank=True,
            null=True
      )
-     description = models.TextField(verbose_name=_("Xizmat haqida"), blank=True, null=True)
+#      description = models.TextField(verbose_name=_("Xizmat haqida"), blank=True, null=True)
      link = models.CharField(
          verbose_name=_("Xizmatga havola"),
            max_length=255,

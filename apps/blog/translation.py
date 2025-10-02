@@ -4,7 +4,7 @@ from apps.blog.models import InteractiveService, FAQ
 
 @register(InteractiveService)
 class InteractiveServiceTranslationOptions(TranslationOptions):
-    fields = ("name", "description")
+    fields = ("name", )
 
 
 @register(FAQ)
