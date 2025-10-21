@@ -8,7 +8,7 @@ from .models.documents import Document, MenuItem
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
       list_display = (
-            'id', 'full_name', 'employee_id_number', 'staffPosition', 
+            'id', 'full_name',  
             'academicDegree', 'academicRank', 'employmentForm', 'is_foreign',
             'created_at', 'updated_at'
       )
