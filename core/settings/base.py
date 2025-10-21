@@ -111,13 +111,13 @@ MIDDLEWARE = [
 ]
 
 
-if DEBUG:
-    INSTALLED_APPS.append("silk")
-    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
-    INTERNAL_IPS = [
-        "127.0.0.1",
-        "0.0.0.0",
-    ]
+# if DEBUG:
+#     INSTALLED_APPS.append("silk")
+#     MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
+#     INTERNAL_IPS = [
+#         "127.0.0.1",
+#         "0.0.0.0",
+#     ]
     
 ROOT_URLCONF = "core.urls"
 
@@ -225,6 +225,11 @@ STATICFILES_DIRS = (BASE_DIR / "staticfiles",)
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Fayl yuklash limitlarini oshirish
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50MB
+
 
 customColorPalette = [
         {
