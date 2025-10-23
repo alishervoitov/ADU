@@ -7,7 +7,7 @@ from django.db.models import Q
 class DivisionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Divisions
-        fields = ['id', 'name', 'icon', 'slug']
+        fields = ['id', 'name', 'icon', 'slug', 'have_a_sub_menu']
 
 
 class DivisionDocumentSerializer(serializers.ModelSerializer):
@@ -39,5 +39,6 @@ class DivisionDetailSerializer(serializers.ModelSerializer):
             'slug',
             'view_count',
             'decan',
-            'documents'
+            'documents',
+            'have_a_sub_menu'
         ]
