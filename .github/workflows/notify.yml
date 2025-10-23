@@ -17,7 +17,6 @@ jobs:
       - name: 📤 Send Telegram notification on push
         if: github.event_name == 'push'
         run: |
-          export TZ="Asia/Tashkent"
           MESSAGE=$(cat <<EOF
           🚀 *New Push to GitHub!*
 
