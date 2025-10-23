@@ -36,7 +36,6 @@ jobs:
 
       - name: Set up test environment
         run: |
-          # Test uchun environment o'zgaruvchilarini o'rnatish
           echo "DJANGO_SETTINGS_MODULE=core.settings.test" >> $GITHUB_ENV
           echo "DATABASE_URL=sqlite:///test.db" >> $GITHUB_ENV
           echo "SECRET_KEY=SOME_SECRET_KEY_QATTU" >> $GITHUB_ENV
@@ -44,28 +43,23 @@ jobs:
 
       # - name: Run Django tests with coverage
       #   run: |
-          # coverage run manage.py test
-          # coverage report --fail-under=20
+      #     coverage run manage.py test
+      #     coverage report --fail-under=20
 
       - name: Send test failure notification to Telegram
         if: failure()
         run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+          MESSAGE="❌ <b>Tests failed! Deployment cancelled.</b>%0A%0A📂 <b>Repo:</b> <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A🌿 <b>Branch:</b> <code>${{ github.ref_name }}</code>%0A🔖 <b>Commit:</b> <code>${{ github.sha }}</code>%0A👤 <b>Author:</b> <code>${{ github.actor }}</code>%0A%0APlease check the <a href=\"https://github.com/${{ github.repository }}/actions\">GitHub Actions logs</a> for details.%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="❌ Tests failed! Deployment cancelled.
-          
-          Repository: ${{ github.repository }}
-          Branch: ${{ github.ref_name }}
-          Commit: ${{ github.sha }}
-          Author: ${{ github.actor }}
-          
-          Please check the GitHub Actions logs for details."
+            -d text="$MESSAGE" \
+            -d parse_mode="HTML"
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test  
-    if: success()  
-    
+    needs: test
+    if: success()
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -77,52 +71,38 @@ jobs:
           port: ${{ env.SSH_PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script_stop: true  # Scriptda xatolik bo'lsa to'xtatadi
+          script_stop: true
           script: |
-            set -ex  # Har qanday xatolikda scriptni to'xtatadi
-            
+            set -ex
+
             echo "🚀 Starting deployment..."
-            
-            # Project direktoriyasiga o'tish
+
             cd /var/www/adu
-            
-            # Git remote URL o'rnatish  (expired: 30-oct. 2025)
+
             git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.TOKEN_GITHUB }}@github.com/${{ github.repository }}.git
-            
+
             echo "🔄 Pulling latest changes..."
             git fetch --all
-            git reset --hard origin/main 
+            git reset --hard origin/main
             git pull origin main
 
-            # TODO:  requirements ni ichidagilari o'zgargan o'zgarmaganligini tekshirish kerak
-            # CHANGED_FILES=$(git diff --name-only HEAD^ HEAD -- requirements/)
-            # if [ -n "$CHANGED_FILES" ]; then
-            #   echo "📦 Requirements changed (files: $CHANGED_FILES). Will update dependencies..."
-            #   REQUIREMENTS_CHANGED=true
-            # else
-            #   echo "📦 Requirements unchanged."
-            #   REQUIREMENTS_CHANGED=false
-            # fi
             REQUIREMENTS_CHANGED=true
-
 
             source venv/bin/activate
             if [ "$REQUIREMENTS_CHANGED" = true ]; then
               echo "📦 Installing/updating dependencies..."
               pip install -r requirements/develop.txt
             fi
-            
+
             echo "🗄️ Running migrations..."
             python manage.py migrate --noinput
-            
+
             echo "📁 Collecting static files..."
             python manage.py collectstatic --noinput
-            
-            # Service restart
+
             echo "🔄 Restarting service..."
             sudo systemctl restart adu_back
-            
-            # Service status tekshirish
+
             echo "✅ Checking service status..."
             sleep 5
             sudo systemctl is-active --quiet adu_back && \
@@ -130,42 +110,22 @@ jobs:
               { echo "❌ Service failed to start"; sudo systemctl status adu_back; exit 1; }
 
             echo "✅ Deployment completed successfully!"
-            
-            # coverage run manage.py test
-            # coverage report --fail-under=20
-            # coverage html --fail-under=20 
 
       - name: Notify Telegram - Successful Deployment
         if: success()
         run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-          -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-          -d text="✅ *Deployment successful!* 
-
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          
-          🚀 Branch: \`${{ github.ref_name }}\`
-          🔖 Commit: \`${{ github.sha }}\`
-          📝 *Message:* _${{ github.event.head_commit.message }}_
-          👤 Author: ${{ github.actor }}
-          📊 Coverage Test Report: [View Report](https://report.1vs1.uz)
-
-          📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
-          -d parse_mode=Markdown
+          SAFE_MSG=$(echo "${{ github.event.head_commit.message }}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+          MESSAGE="✅ <b>Deployment successful!</b>%0A%0A📂 <b>Repo:</b> <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A🚀 <b>Branch:</b> <code>${{ github.ref_name }}</code>%0A🔖 <b>Commit:</b> <code>${{ github.sha }}</code>%0A📝 <b>Message:</b> ${SAFE_MSG}%0A👤 <b>Author:</b> <code>${{ github.actor }}</code>%0A📊 <b>Coverage Report:</b> <a href=\"https://report.1vs1.uz\">View Report</a>%0A%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="$MESSAGE" \
+            -d parse_mode="HTML"
 
       - name: Notify Telegram - Failed Deployment
         if: failure()
         run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-          -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-          -d text="❌ *Deployment FAILED!* 
-
-          📂 Repo: [${{ github.repository }}](https://github.com/${{ github.repository }})
-          
-          💥 Branch: \`${{ github.ref_name }}\`
-          📝 Commit: \`${{ github.sha }}\`
-          👤 Author: ${{ github.actor }}
-          🔍 Check [GitHub Actions logs](https://github.com/${{ github.repository }}/actions) for details.
-
-          📅 _Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")_" \
-          -d parse_mode=Markdown
+          MESSAGE="❌ <b>Deployment FAILED!</b>%0A%0A📂 <b>Repo:</b> <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A💥 <b>Branch:</b> <code>${{ github.ref_name }}</code>%0A📝 <b>Commit:</b> <code>${{ github.sha }}</code>%0A👤 <b>Author:</b> <code>${{ github.actor }}</code>%0A🔍 Check <a href=\"https://github.com/${{ github.repository }}/actions\">GitHub Actions logs</a> for details.%0A%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="$MESSAGE" \
+            -d parse_mode="HTML"
