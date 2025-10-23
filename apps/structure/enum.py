@@ -55,6 +55,7 @@ class MenuItemEnum(Enum):
     ADMISSION_INTERNATIONAL = "international"
     ADMISSION_DISTANCE = "distance"
     ADMISSION_DORMITORIES = "dormitories"
+    ADMISSION_PASSING_SCORE_STATISTIC = "passing-score-statistic"
 
     @classmethod
     def choices(cls):
