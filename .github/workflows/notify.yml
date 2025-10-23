@@ -5,9 +5,7 @@ on:
     branches:
       - '**'
   pull_request:
-    types:
-      - opened
-      - closed
+    types: [opened, closed]
 
 jobs:
   notify:
@@ -18,59 +16,26 @@ jobs:
         if: github.event_name == 'push'
         run: |
           GITHUB_MESSAGE=$(echo "${{ github.event.head_commit.message }}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-          MESSAGE=$(cat <<EOF
-🚀 <b>New Push to GitHub!</b>
-
-📂 Repo: <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a><br>
-🌿 <b>Branch:</b> <code>${{ github.ref_name }}</code><br>
-🔖 <b>Commit:</b> <code>${{ github.sha }}</code><br>
-📝 <b>Message:</b> ${GITHUB_MESSAGE}<br>
-👤 <b>Pushed by:</b> <code>${{ github.actor }}</code><br><br>
-
-📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>
-EOF
-)
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+          MESSAGE="🚀 <b>New Push to GitHub!</b>%0A%0A📂 Repo: <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A🌿 <b>Branch:</b> <code>${{ github.ref_name }}</code>%0A🔖 <b>Commit:</b> <code>${{ github.sha }}</code>%0A📝 <b>Message:</b> ${GITHUB_MESSAGE}%0A👤 <b>Pushed by:</b> <code>${{ github.actor }}</code>%0A%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d text="$MESSAGE" \
-            -d parse_mode=HTML
+            -d parse_mode="HTML"
 
       - name: 📝 Send Telegram notification on PR opened
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         run: |
-          MESSAGE=$(cat <<EOF
-🔧 <b>New Pull Request Opened!</b>
-
-📂 Repo: <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a><br>
-🔀 <b>From:</b> <code>${{ github.head_ref }}</code><br>
-➡️ <b>To:</b> <code>${{ github.base_ref }}</code><br>
-👤 <b>Opened by:</b> <code>${{ github.actor }}</code><br>
-🔗 <a href="${{ github.event.pull_request.html_url }}">View Pull Request</a><br><br>
-
-📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>
-EOF
-)
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+          MESSAGE="🔧 <b>New Pull Request Opened!</b>%0A%0A📂 Repo: <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A🔀 <b>From:</b> <code>${{ github.head_ref }}</code>%0A➡️ <b>To:</b> <code>${{ github.base_ref }}</code>%0A👤 <b>Opened by:</b> <code>${{ github.actor }}</code>%0A🔗 <a href=\"${{ github.event.pull_request.html_url }}\">View PR</a>%0A%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d text="$MESSAGE" \
-            -d parse_mode=HTML
+            -d parse_mode="HTML"
 
       - name: ✅ Send Telegram notification on merge to main
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.base_ref == 'main'
         run: |
-          MESSAGE=$(cat <<EOF
-🎉 <b>Pull Request Merged Successfully!</b>
-
-📂 Repo: <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a><br>
-🌿 <b>Merged into:</b> <code>${{ github.base_ref }}</code><br>
-🔀 <b>From:</b> <code>${{ github.head_ref }}</code><br>
-👤 <b>Merged by:</b> <code>${{ github.actor }}</code><br>
-🔗 <a href="${{ github.event.pull_request.html_url }}">View Pull Request</a><br><br>
-
-📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>
-EOF
-)
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+          MESSAGE="🎉 <b>Pull Request Merged Successfully!</b>%0A%0A📂 Repo: <a href=\"https://github.com/${{ github.repository }}\">${{ github.repository }}</a>%0A🌿 <b>Merged into:</b> <code>${{ github.base_ref }}</code>%0A🔀 <b>From:</b> <code>${{ github.head_ref }}</code>%0A👤 <b>Merged by:</b> <code>${{ github.actor }}</code>%0A🔗 <a href=\"${{ github.event.pull_request.html_url }}\">View PR</a>%0A%0A📅 <i>Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")</i>"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d text="$MESSAGE" \
-            -d parse_mode=HTML
+            -d parse_mode="HTML"
