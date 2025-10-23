@@ -167,6 +167,7 @@ class Divisions(TimeStamped, Authored):
     )   
     slug = models.SlugField(max_length=255, verbose_name=_("Slug"), null=True, blank=True, unique=True)
     view_count = models.PositiveIntegerField(default=0, verbose_name=_("Ko'rishlar soni"))
+    have_a_sub_menu = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

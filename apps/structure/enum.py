@@ -74,6 +74,7 @@ class DivisionTypeEnum(Enum):
     ADMISSION_MASTER = "master"
     ADMISSION_DOCTORATE = "doctoral"
     ADMISSION_REGULATION = "regulations"
+    EDUCATIONAL_AND_METHODOLOGICAL_DEPARTMENT = "educational_and_methodological_department"
     
     
     
