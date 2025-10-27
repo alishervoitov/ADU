@@ -10,7 +10,8 @@ from apps.structure.models import (
     UniversityBaseInfo,
     Department,
     Faculty,
-    Specialty
+    Specialty,
+    DepartmentEmployee
 
 )
 @register(Divisions)
@@ -53,3 +54,7 @@ class FacultyTranslationOptions(TranslationOptions):
 @register(Specialty)
 class SpecialtyTranslationOptions(TranslationOptions):
     fields = ('name', 'description',)
+
+@register(DepartmentEmployee)
+class DepartmentEmployeeTranslationOptions(TranslationOptions):
+    fields = ('task',)
