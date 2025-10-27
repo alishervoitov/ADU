@@ -68,3 +68,13 @@ pre-commit install
 #### Yaratilgan tarjima fayllarini kompilatsiya qilish
 - `python manage.py compilemessages`
 
+
+### Backup
+```bash
+pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f /var/www/backups/adu_backup_27_10.dump adu
+```
+
+### Restore
+```bash
+pg_restore -U postgres -h localhost -d new_adu_db -v /backups/adu_backup_27_10.dump
+```
