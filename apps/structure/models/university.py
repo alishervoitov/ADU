@@ -20,7 +20,7 @@ class Faculty(TimeStamped, Authored):
     name = models.CharField(max_length=255, verbose_name=_("Fakultet nomi"))
     slug = models.SlugField(max_length=255, unique=True, verbose_name=_("Slug"), blank=True)
     code = models.CharField(max_length=20, verbose_name=_("Kod"), null=True, blank=True)
-    description = models.TextField(blank=True, null=True, verbose_name=_("Tavsif"))
+    description = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
     banner = models.ImageField(upload_to="faculty/banner", blank=True, null=True, verbose_name=_("Banner"))
     icon = models.ImageField(upload_to="faculty/icon", blank=True, null=True, verbose_name=_("Ikon"))
     # color = ColorField(samples=COLOR_PALETTE)
@@ -52,7 +52,7 @@ class Department(TimeStamped, Authored):
     slug = models.SlugField(max_length=255, unique=True, verbose_name=_("Slug"), blank=True)
     code = models.CharField(max_length=20, verbose_name=_("Kod"), null=True, blank=True)
     faculty = models.ForeignKey(Faculty, on_delete=models.RESTRICT, related_name="departments", verbose_name=_("Fakultet"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Tavsif"))
+    description = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
     position = models.PositiveSmallIntegerField(default=0, verbose_name=_("Joylashuv Tartibi"))
 
     def __str__(self):
@@ -96,7 +96,7 @@ class Specialty(TimeStamped, Authored):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, related_name="specialities", null=True, verbose_name=_("Kafedra"))
     educationType = models.IntegerField(choices=EDUCATION_TYPE, default=11, verbose_name=_("Ta'lim turi"))
     localityType = models.IntegerField(choices=LOCALITY_TYPE, default=11, verbose_name=_("Mahalliylik turi"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Tavsif"))
+    description = RichTextField(verbose_name=_("Tavsif"), null=True, blank=True)
     position = models.PositiveSmallIntegerField(default=0, verbose_name=_("Joylashuv Tartibi"))
 
     def __str__(self):
