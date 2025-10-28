@@ -16,8 +16,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return None
     
     def get_task(self, obj):
-        if self.task:
-            return self.task
+        if self.context.get("task"):
+            return self.context.get("task")
         return obj.task
     
     class Meta:
@@ -35,10 +35,10 @@ class DepartmentDetailSerializer(serializers.ModelSerializer):
     employees = serializers.SerializerMethodField()
 
     def get_decan(self, obj):
-        return EmployeeSerializer(obj.employees.filter(position=Employee.DEPARTMENT_USER).first().employee, context=self.context, task=obj.employees.filter(position=Employee.DEPARTMENT_USER).first().task).data if obj.employees.filter(position=Employee.DEPARTMENT_USER).exists() else None
+        return EmployeeSerializer(obj.employees.filter(position=Employee.DEPARTMENT_USER).first().employee, context={**self.context, "task": obj.employees.filter(position=Employee.DEPARTMENT_USER).first().task}).data if obj.employees.filter(position=Employee.DEPARTMENT_USER).exists() else None
 
     def get_employees(self, obj):
-        return [EmployeeSerializer(emp.employee, context=self.context, task=emp.task).data for emp in obj.employees.filter(~Q(position=Employee.DEPARTMENT_USER))] if obj.employees.exists() else []
+        return [EmployeeSerializer(emp.employee, context={**self.context, "task": emp.task}).data for emp in obj.employees.filter(~Q(position=Employee.DEPARTMENT_USER))] if obj.employees.exists() else []
 
     class Meta:
         model = Department
