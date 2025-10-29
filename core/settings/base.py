@@ -279,7 +279,16 @@ CKEDITOR_5_CONFIGS = {
         'language': 'uz',
     }
 }
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'allowedContent': True,  # <— muhim
+        'extraAllowedContent': '*(*);*{*}',  # inline style va classlarni ruxsat berish
+        'removePlugins': 'stylesheetparser',
+        'language': 'uz',
+        'forcePasteAsPlainText': False,
+    }
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
