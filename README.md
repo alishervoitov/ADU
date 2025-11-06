@@ -28,6 +28,10 @@ ALTER ROLE adu_user SET client_encoding TO 'utf8';
 ALTER ROLE adu_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE adu_user SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE adu_db TO adu_user;
+
+\c adu_db;
+GRANT ALL ON SCHEMA public TO adu_user;
+ALTER SCHEMA public OWNER TO adu_user;
 \q
 ```
 
@@ -71,10 +75,10 @@ pre-commit install
 
 ### Backup
 ```bash
-pg_dump -U postgres -h localhost -p 5432 -F c -b -v -f /var/www/backups/adu_backup_27_10.dump adu
+pg_dump -U adu_user -h localhost -p 5432 -F c -b -v -f /var/www/backups/adu_backup_27_10.dump adu
 ```
 
 ### Restore
 ```bash
-pg_restore -U postgres -h localhost -d new_adu_db -v /backups/adu_backup_27_10.dump
+pg_restore -U adu_user -h localhost -d new_adu_db -v /backups/adu_backup_27_10.dump
 ```
