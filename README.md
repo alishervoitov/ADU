@@ -75,10 +75,11 @@ pre-commit install
 
 ### Backup
 ```bash
-pg_dump -U adu_user -h localhost -p 5432 -F c -b -v -f /var/www/backups/adu_backup_27_10.dump adu
+pg_dump -U postgres -h localhost -F c -b -v -f /var/www/backups/adu_full_$(date +%Y%m%d).dump adu
 ```
 
 ### Restore
 ```bash
-pg_restore -U adu_user -h localhost -d new_adu_db -v /backups/adu_backup_27_10.dump
+pg_restore -U postgres -h localhost -d new_adu_db --create --clean --if-exists -v /var/www/backups/adu_backup_27_10.dump
+
 ```
