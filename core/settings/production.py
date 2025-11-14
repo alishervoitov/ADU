@@ -81,6 +81,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://adu.1vs1.uz',
     'https://adu.mamatmusayev.uz',
     'http://localhost:3000', 
+    'http://5.189.138.155:3000', 
 ]
 CORS_ALLOW_CREDENTIALS = True
 
