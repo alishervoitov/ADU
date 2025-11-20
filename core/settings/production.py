@@ -123,16 +123,16 @@ LOGGING = {
             'formatter': 'simple',
         },
         # -- celery log handler
-        'celery_log_file': {
-            'level': LOG_LEVEL,
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'midnight',
-            'interval': 1,
-            'backupCount': 30,
-            'filename': f'{logs_path}/celery.log',
-            'formatter': 'verbose',
-            'encoding': 'utf-8',
-        },
+        # 'celery_log_file': {
+        #     'level': LOG_LEVEL,
+        #     'class': 'logging.handlers.TimedRotatingFileHandler',
+        #     'when': 'midnight',
+        #     'interval': 1,
+        #     'backupCount': 30,
+        #     'filename': f'{logs_path}/celery.log',
+        #     'formatter': 'verbose',
+        #     'encoding': 'utf-8',
+        # },
     },
     'loggers': {
         'django': {
@@ -147,11 +147,11 @@ LOGGING = {
             'propagate': False,
         },
         # -- Celery logger
-        'celery_logger': {
-            'handlers': ['celery_log_file', 'console', 'telegrambot_alert'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
+        # 'celery_logger': {
+        #     'handlers': ['celery_log_file', 'console', 'telegrambot_alert'],
+        #     'level': LOG_LEVEL,
+        #     'propagate': False,
+        # },
     },
 }
 
