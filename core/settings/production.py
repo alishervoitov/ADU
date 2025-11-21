@@ -6,6 +6,9 @@ from .base import *  # noqa
 
 DEBUG = False
 
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
 # Production server uchun ALLOWED_HOSTS
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -108,7 +111,8 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': f'{logs_path}/django.log',
+            "filename": os.path.join(LOG_DIR, "debug.log"),
+            "formatter": "verbose",
         },
         # -- telegram bot handler
         'telegrambot_alert': {
@@ -123,16 +127,14 @@ LOGGING = {
             'formatter': 'simple',
         },
         # -- celery log handler
-        # 'celery_log_file': {
-        #     'level': LOG_LEVEL,
-        #     'class': 'logging.handlers.TimedRotatingFileHandler',
-        #     'when': 'midnight',
-        #     'interval': 1,
-        #     'backupCount': 30,
-        #     'filename': f'{logs_path}/celery.log',
-        #     'formatter': 'verbose',
-        #     'encoding': 'utf-8',
-        # },
+        'celery_log_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'celery.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
     },
     'loggers': {
         'django': {
@@ -147,11 +149,11 @@ LOGGING = {
             'propagate': False,
         },
         # -- Celery logger
-        # 'celery_logger': {
-        #     'handlers': ['celery_log_file', 'console', 'telegrambot_alert'],
-        #     'level': LOG_LEVEL,
-        #     'propagate': False,
-        # },
+        'celery_logger': {
+            'handlers': ['celery_log_file', 'console', 'telegrambot_alert'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
     },
 }
 
