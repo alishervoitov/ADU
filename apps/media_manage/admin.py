@@ -16,7 +16,7 @@ class NewsAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'title')
     list_filter = ('type',)
 
-    readonly_fields = ('viewed_count', 'created_at', 'updated_at', 'created_by', 'updated_by')
+    readonly_fields = ('viewed_count', 'updated_at', 'created_by', 'updated_by')
 
 
 class DocumentTypeAdmin(admin.ModelAdmin):
