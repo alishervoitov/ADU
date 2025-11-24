@@ -13,13 +13,8 @@ ALLOWED_HOSTS = [
     'api.1vs1.uz', 
     '1vs1.uz',
     '185.133.251.101', 
-    'adu.1vs1.uz',
-    # google 
-    '.google.com',
-    'www.mamatmusayev.uz',
-    'mamatmusayev.uz',
-    'adu.mamatmusayev.uz',
-    'api.adu.mamatmusayev.uz',
+    'adu.uz',
+    'api.adu.uz',
     '5.189.138.155',
 ]
 
@@ -57,11 +52,9 @@ CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
     'https://1vs1.uz',
-    'https://adu.1vs1.uz',
-    # google.com
-    'https://mamatmusayev.uz',
-    'https://adu.mamatmusayev.uz',
-    'https://api.adu.mamatmusayev.uz',
+    
+    'https://api.adu.uz', 
+    'https://adu.uz',
     
 ]
 
@@ -76,9 +69,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ORIGIN_ALLOW_ALL = False  
 CORS_ALLOWED_ORIGINS = [
+    'https://adu.uz', 
     'https://1vs1.uz', 
     'https://adu.1vs1.uz',
-    'https://adu.mamatmusayev.uz',
     'http://localhost:3000', 
     'http://5.189.138.155:3000', 
 ]
