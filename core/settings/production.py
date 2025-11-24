@@ -48,12 +48,11 @@ DATABASES['default'].update({
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
     'https://1vs1.uz',
     
-    'http://api.adu.uz', 
     'https://api.adu.uz', 
     'https://adu.uz',
     
