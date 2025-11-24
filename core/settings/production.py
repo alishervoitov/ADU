@@ -59,7 +59,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://1vs1.uz',
     'https://adu.1vs1.uz',
     # google.com
-    'https://*.google.com',
     'https://mamatmusayev.uz',
     'https://adu.mamatmusayev.uz',
     'https://api.adu.mamatmusayev.uz',
@@ -84,8 +83,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://5.189.138.155:3000', 
 ]
 CORS_ALLOW_CREDENTIALS = True
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ###################################################################
 # Logging
