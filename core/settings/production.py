@@ -53,6 +53,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://api.1vs1.uz', 
     'https://1vs1.uz',
     
+    'http://api.adu.uz', 
     'https://api.adu.uz', 
     'https://adu.uz',
     
