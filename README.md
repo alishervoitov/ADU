@@ -83,3 +83,11 @@ pg_dump -U postgres -h localhost -F c -b -v -f /var/www/backups/adu_full_$(date 
 pg_restore -U postgres -h localhost -d new_adu_db --create --clean --if-exists -v /var/www/backups/adu_backup_27_10.dump
 
 ```
+
+
+# Local
+docker build -t bahodir23/adu-backend:latest .
+docker push bahodir23/adu-backend:latest
+
+# Server
+docker compose down && docker compose pull && docker compose up -d
