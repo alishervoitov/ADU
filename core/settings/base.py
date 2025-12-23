@@ -37,7 +37,7 @@ DEBUG = env.bool("DEBUG")
 
 TESTING = True if (len(sys.argv) > 1 and sys.argv[1] == "test") else False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["adu.uz", "api.adu.uz", "wwww.adu.uz"]
 
 # Application definition
 DJANGO_APPS = [
