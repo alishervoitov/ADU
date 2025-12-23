@@ -102,7 +102,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            "filename": os.path.join(LOG_DIR, "debug.log"),
+            "filename": LOG_DIR / 'debug.log',
             "formatter": "verbose",
         },
         # -- telegram bot handler
@@ -121,7 +121,7 @@ LOGGING = {
         'celery_log_file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOG_DIR, 'celery.log'),
+            'filename':  LOG_DIR / 'celery.log',
             'maxBytes': 1024*1024*5,
             'backupCount': 5,
             'formatter': 'verbose',
