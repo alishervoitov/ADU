@@ -83,7 +83,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Logging
 ###################################################################
 LOG_LEVEL = 'ERROR'
-logs_path = BASE_DIR / 'logs'
+LOG_DIR = BASE_DIR / 'logs'
 
 LOGGING = {
     'version': 1,
