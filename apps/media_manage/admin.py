@@ -17,6 +17,20 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ('type',)
 
     readonly_fields = ('viewed_count', 'updated_at', 'created_by', 'updated_by')
+    
+    def save_model(self, request, obj, form, change):
+        if change:
+            update_fields = []
+
+            for field in form.changed_data:
+                update_fields.append(field)
+
+            if update_fields:
+                obj.save(update_fields=update_fields)
+            else:
+                obj.save()
+        else:
+            obj.save()
 
 
 class DocumentTypeAdmin(admin.ModelAdmin):
