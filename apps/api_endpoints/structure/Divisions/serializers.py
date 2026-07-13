@@ -14,7 +14,7 @@ class DivisionDocumentSerializer(serializers.ModelSerializer):
     link = serializers.SerializerMethodField()
     class Meta:
         model = DivisionDocument
-        fields = ['id', 'name', 'link', 'slug']
+        fields = ['id', 'name', 'link', 'slug', 'year']
     
     def get_link(self, obj):
         if obj.file:
